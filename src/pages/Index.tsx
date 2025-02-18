@@ -1,8 +1,9 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { SearchAndFilter } from "@/components/SearchAndFilter";
+import { FilterBar } from "@/components/FilterBar";
 import { AVNCard } from "@/components/AVNCard";
 import { avns, genres } from "@/data/avns";
 import { Genre } from "@/types/avn";
@@ -11,6 +12,17 @@ import { Helmet } from "react-helmet";
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedGenres, setSelectedGenres] = useState<Genre[]>([]);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      setIsScrolled(scrollPosition > 400); // Adjust this value based on hero section height
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const filteredAVNs = avns.filter((avn) => {
     const matchesSearch =
@@ -72,6 +84,15 @@ const Index = () => {
             </div>
           </div>
         </section>
+
+        <FilterBar
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+          selectedGenres={selectedGenres}
+          onGenreToggle={handleGenreToggle}
+          availableGenres={genres}
+          isSticky={isScrolled}
+        />
 
         <div className="container py-12 space-y-12">
           {featuredAVNs.length > 0 && (
