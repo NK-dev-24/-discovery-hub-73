@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 import { SearchAndFilter } from "@/components/SearchAndFilter";
 import { AVNCard } from "@/components/AVNCard";
 import { avns, genres } from "@/data/avns";
@@ -95,6 +96,8 @@ const Index = () => {
           </section>
         </div>
       </main>
+
+      <Footer />
     </div>
   );
 };
