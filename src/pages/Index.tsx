@@ -9,7 +9,6 @@ import { Genre } from "@/types/avn";
 import { Helmet } from "react-helmet";
 
 const Index = () => {
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedGenres, setSelectedGenres] = useState<Genre[]>([]);
 
@@ -47,7 +46,7 @@ const Index = () => {
         />
       </Helmet>
 
-      <Header viewMode={viewMode} onViewModeChange={setViewMode} />
+      <Header />
       
       <main className="flex-1 py-8">
         <div className="container space-y-8">
@@ -82,13 +81,7 @@ const Index = () => {
 
           <section className="space-y-4">
             <h2 className="text-2xl font-semibold">All AVNs</h2>
-            <div
-              className={
-                viewMode === "grid"
-                  ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-                  : "space-y-4"
-              }
-            >
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredAVNs.map((avn) => (
                 <AVNCard key={avn.id} avn={avn} />
               ))}
