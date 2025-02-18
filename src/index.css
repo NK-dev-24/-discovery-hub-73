@@ -3,28 +3,39 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Inter:wght@400;500&display=swap');
+
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
+    --background: 20 100% 97%; /* Light peach #FFEAE1 */
+    --foreground: 0 0% 20%; /* Dark gray #333333 */
+    
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+    --card-foreground: 0 0% 20%;
+    
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 346.8 77.2% 49.8%;
-    --primary-foreground: 355.7 100% 97.3%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
+    --popover-foreground: 0 0% 20%;
+    
+    --primary: 351 100% 85%; /* Dusty pink #FFB4C1 */
+    --primary-foreground: 0 0% 20%;
+    
+    --secondary: 171 79% 83%; /* Mint #B2F7EF */
+    --secondary-foreground: 0 0% 20%;
+    
+    --muted: 0 0% 96%; /* Light gray #F5F5F5 */
+    --muted-foreground: 0 0% 40%;
+    
+    --accent: 276 67% 86%; /* Lavender purple #DCC6F0 */
+    --accent-foreground: 0 0% 20%;
+    
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 346.8 77.2% 49.8%;
-    --radius: 0.75rem;
+    
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 351 100% 85%;
+    
+    --radius: 1rem;
   }
 }
 
@@ -32,7 +43,34 @@
   * {
     @apply border-border;
   }
+  
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-inter;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-nunito font-bold tracking-wide;
+  }
+
+  h1 {
+    @apply text-4xl md:text-5xl drop-shadow-sm;
+  }
+
+  h2 {
+    @apply text-3xl md:text-4xl drop-shadow-sm;
+  }
+
+  h3 {
+    @apply text-2xl md:text-3xl;
+  }
+}
+
+@layer utilities {
+  .font-nunito {
+    font-family: 'Nunito', sans-serif;
+  }
+
+  .font-inter {
+    font-family: 'Inter', sans-serif;
   }
 }

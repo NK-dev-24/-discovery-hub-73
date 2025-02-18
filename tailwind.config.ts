@@ -19,6 +19,10 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        nunito: ['Nunito', 'sans-serif'],
+        inter: ['Inter', 'sans-serif'],
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
@@ -36,12 +40,17 @@ export default {
           "0%": { transform: "translateX(-100%)" },
           "100%": { transform: "translateX(0)" },
         },
+        scaleIn: {
+          "0%": { transform: "scale(0.95)" },
+          "100%": { transform: "scale(1)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         fadeIn: "fadeIn 0.5s ease-out forwards",
         slideIn: "slideIn 0.3s ease-out forwards",
+        scaleIn: "scaleIn 0.2s ease-out forwards",
       },
       colors: {
         border: "hsl(var(--border))",
