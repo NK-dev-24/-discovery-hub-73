@@ -48,26 +48,32 @@ const Index = () => {
 
       <Header />
       
-      <main className="flex-1 py-8">
-        <div className="container space-y-8">
-          <div className="space-y-4">
-            <h1 className="text-4xl font-bold tracking-tight">
-              Discover Amazing AVNs
-            </h1>
-            <p className="text-muted-foreground max-w-3xl text-lg">
-              Explore our curated collection of Adult Visual Novels. Use the search and filters 
-              below to find your next favorite story.
-            </p>
+      <main className="flex-1">
+        <section className="relative w-full min-h-[60vh] flex items-center justify-center bg-gradient-to-br from-pink-50 via-orange-50 to-purple-50">
+          <div className="absolute inset-0 bg-[url('/pattern.svg')] opacity-5" />
+          <div className="container max-w-4xl mx-auto px-4 py-12 md:py-20 space-y-8 relative z-10">
+            <div className="text-center space-y-4">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600">
+                Discover Your Next AVN Adventure
+              </h1>
+              <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto">
+                Explore our curated collection of Adult Visual Novels. Find your perfect story.
+              </p>
+            </div>
+            
+            <div className="space-y-6">
+              <SearchAndFilter
+                searchQuery={searchQuery}
+                onSearchChange={setSearchQuery}
+                selectedGenres={selectedGenres}
+                onGenreToggle={handleGenreToggle}
+                availableGenres={genres}
+              />
+            </div>
           </div>
+        </section>
 
-          <SearchAndFilter
-            searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
-            selectedGenres={selectedGenres}
-            onGenreToggle={handleGenreToggle}
-            availableGenres={genres}
-          />
-
+        <div className="container py-12 space-y-12">
           {featuredAVNs.length > 0 && (
             <section className="space-y-4">
               <h2 className="text-2xl font-semibold">Featured AVNs</h2>
