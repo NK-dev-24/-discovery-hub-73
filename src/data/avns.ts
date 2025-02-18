@@ -1,0 +1,70 @@
+
+import { AVN } from "@/types/avn";
+
+export const avns: AVN[] = [
+  {
+    id: "1",
+    title: "Stellar Choices",
+    description: "A sci-fi adventure where your choices shape the fate of an interstellar colony. Navigate complex relationships and uncover dark secrets aboard the colony ship.",
+    genre: ["Sci-Fi", "Romance", "Mystery"],
+    developer: "Nova Interactive",
+    website: "https://example.com/stellar-choices",
+    support: "https://ko-fi.com/nova-interactive",
+    rating: 4.8,
+    reviewCount: 256,
+    featured: true,
+    image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b",
+  },
+  {
+    id: "2",
+    title: "Mystic Academy",
+    description: "Discover your magical abilities at an elite school for supernatural beings. Form alliances, master spells, and maybe find love along the way.",
+    genre: ["Fantasy", "Romance"],
+    developer: "Enchanted Studios",
+    website: "https://example.com/mystic-academy",
+    support: "https://patreon.com/enchanted-studios",
+    rating: 4.6,
+    reviewCount: 189,
+    featured: true,
+    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
+  },
+  {
+    id: "3",
+    title: "Neon Hearts",
+    description: "In a cyberpunk metropolis, navigate corporate intrigue and passionate romances. Your choices will determine the future of both your heart and the city.",
+    genre: ["Sci-Fi", "Romance", "Drama"],
+    developer: "Digital Dreams",
+    website: "https://example.com/neon-hearts",
+    rating: 4.5,
+    reviewCount: 145,
+    featured: false,
+    image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7",
+  },
+  {
+    id: "4",
+    title: "Shadow Manor",
+    description: "Unravel the mysteries of an ancient mansion while avoiding supernatural threats. Who can you trust when everyone has secrets?",
+    genre: ["Horror", "Mystery"],
+    developer: "Darklight Games",
+    website: "https://example.com/shadow-manor",
+    support: "https://buymeacoffee.com/darklight",
+    rating: 4.7,
+    reviewCount: 203,
+    featured: true,
+    image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
+  },
+  {
+    id: "5",
+    title: "Love & Laughter",
+    description: "A lighthearted romantic comedy about finding love in unexpected places. Navigate hilarious situations and charming characters.",
+    genre: ["Romance", "Comedy"],
+    developer: "Heart Studio",
+    website: "https://example.com/love-and-laughter",
+    rating: 4.4,
+    reviewCount: 167,
+    featured: false,
+    image: "https://images.unsplash.com/photo-1518005020951-eccb494ad742",
+  }
+];
+
+export const genres: Genre[] = ["Fantasy", "Romance", "Sci-Fi", "Mystery", "Horror", "Comedy", "Drama"];
