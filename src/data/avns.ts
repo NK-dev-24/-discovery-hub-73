@@ -1,5 +1,5 @@
 
-import { AVN } from "@/types/avn";
+import { AVN, Genre } from "@/types/avn";
 
 export const avns: AVN[] = [
   {
