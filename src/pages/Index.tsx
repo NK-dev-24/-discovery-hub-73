@@ -85,7 +85,7 @@ const Index = () => {
                   type="search"
                   placeholder="Search AVNs by title, genre, or developer..."
                   value={searchQuery}
-                  onChange={(e) => onSearchChange(e.target.value)}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full h-14 pl-12 pr-4 text-lg rounded-xl shadow-sm transition-all duration-200 
                            focus:shadow-md focus:scale-[1.01] bg-white/80 backdrop-blur"
                 />
