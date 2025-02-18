@@ -2,12 +2,14 @@
 import { useState, useEffect } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { SearchAndFilter } from "@/components/SearchAndFilter";
 import { FilterBar } from "@/components/FilterBar";
 import { AVNCard } from "@/components/AVNCard";
 import { avns, genres } from "@/data/avns";
 import { Genre } from "@/types/avn";
 import { Helmet } from "react-helmet";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -17,7 +19,7 @@ const Index = () => {
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY;
-      setIsScrolled(scrollPosition > 400); // Adjust this value based on hero section height
+      setIsScrolled(scrollPosition > 400);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -73,14 +75,21 @@ const Index = () => {
               </p>
             </div>
             
-            <div className="space-y-6">
-              <SearchAndFilter
-                searchQuery={searchQuery}
-                onSearchChange={setSearchQuery}
-                selectedGenres={selectedGenres}
-                onGenreToggle={handleGenreToggle}
-                availableGenres={genres}
-              />
+            <div className={cn(
+              "transition-all duration-300",
+              isScrolled ? "opacity-0" : "opacity-100"
+            )}>
+              <div className="relative max-w-2xl mx-auto">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <Input
+                  type="search"
+                  placeholder="Search AVNs by title, genre, or developer..."
+                  value={searchQuery}
+                  onChange={(e) => onSearchChange(e.target.value)}
+                  className="w-full h-14 pl-12 pr-4 text-lg rounded-xl shadow-sm transition-all duration-200 
+                           focus:shadow-md focus:scale-[1.01] bg-white/80 backdrop-blur"
+                />
+              </div>
             </div>
           </div>
         </section>
@@ -92,6 +101,7 @@ const Index = () => {
           onGenreToggle={handleGenreToggle}
           availableGenres={genres}
           isSticky={isScrolled}
+          showSearch={isScrolled}
         />
 
         <div className="container py-12 space-y-12">

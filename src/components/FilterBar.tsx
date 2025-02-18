@@ -5,6 +5,12 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet";
 import { Badge } from "./ui/badge";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import { Genre } from "@/types/avn";
 
@@ -15,6 +21,7 @@ interface FilterBarProps {
   onGenreToggle: (genre: Genre) => void;
   availableGenres: Genre[];
   isSticky?: boolean;
+  showSearch?: boolean;
 }
 
 const filterCategories = [
@@ -32,20 +39,31 @@ export const FilterBar = ({
   onGenreToggle,
   availableGenres,
   isSticky = false,
+  showSearch = false,
 }: FilterBarProps) => {
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
 
   const FilterOptions = () => (
     <div className="flex items-center gap-2 overflow-x-auto pb-2 hide-scrollbar">
       {filterCategories.map((category) => (
-        <Button
-          key={category.label}
-          variant="outline"
-          className="flex items-center gap-1 whitespace-nowrap bg-white/80 backdrop-blur"
-        >
-          {category.label}
-          <ChevronDown className="h-4 w-4" />
-        </Button>
+        <DropdownMenu key={category.label}>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="outline"
+              className="flex items-center gap-1 whitespace-nowrap bg-white/80 backdrop-blur"
+            >
+              {category.label}
+              <ChevronDown className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start">
+            {category.options.map((option) => (
+              <DropdownMenuItem key={option}>
+                {option}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
       ))}
       <div className="h-full border-l mx-2" />
       {availableGenres.map((genre) => (
@@ -65,20 +83,22 @@ export const FilterBar = ({
   return (
     <div className={cn(
       "w-full transition-all duration-300 ease-in-out py-4 bg-background/95 backdrop-blur z-40",
-      isSticky && "sticky top-16 shadow-sm"
+      isSticky ? "sticky top-16 shadow-sm" : ""
     )}>
       <div className="container">
         <div className="flex flex-col md:flex-row gap-4">
-          <div className="relative flex-shrink-0 w-full md:w-72">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder="Search AVNs..."
-              value={searchQuery}
-              onChange={(e) => onSearchChange(e.target.value)}
-              className="w-full pl-9 h-10"
-            />
-          </div>
+          {showSearch && (
+            <div className="relative flex-shrink-0 w-full md:w-72">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                type="search"
+                placeholder="Search AVNs..."
+                value={searchQuery}
+                onChange={(e) => onSearchChange(e.target.value)}
+                className="w-full pl-9 h-10"
+              />
+            </div>
+          )}
 
           {/* Desktop Filters */}
           <div className="hidden md:block flex-grow">
