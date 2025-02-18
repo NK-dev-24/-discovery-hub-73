@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { SearchAndFilter } from "@/components/SearchAndFilter";
@@ -7,22 +7,10 @@ import { AVNCard } from "@/components/AVNCard";
 import { avns, genres } from "@/data/avns";
 import { Genre } from "@/types/avn";
 import { Helmet } from "react-helmet";
-import { cn } from "@/lib/utils";
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedGenres, setSelectedGenres] = useState<Genre[]>([]);
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY;
-      setIsScrolled(scrollPosition > 100);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   const filteredAVNs = avns.filter((avn) => {
     const matchesSearch =
@@ -60,40 +48,26 @@ const Index = () => {
 
       <Header />
       
-      <main className="flex-1">
-        <div className={cn(
-          "relative w-full transition-all duration-300 ease-in-out",
-          "bg-gradient-to-br from-background via-purple-50/10 to-background",
-          "before:absolute before:inset-0 before:bg-[url('/grid.svg')] before:opacity-5",
-          isScrolled ? "h-0 opacity-0" : "h-[50vh] opacity-100"
-        )}>
-          <div className="container h-full flex flex-col items-center justify-center text-center space-y-8 py-12">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight animate-fade-in">
+      <main className="flex-1 py-8">
+        <div className="container space-y-8">
+          <div className="space-y-4">
+            <h1 className="text-4xl font-bold tracking-tight">
               Discover Amazing AVNs
             </h1>
-            <p className="text-muted-foreground max-w-3xl text-lg md:text-xl animate-fade-in delay-100">
-              Explore our curated collection of Adult Visual Novels. Find your next favorite story.
+            <p className="text-muted-foreground max-w-3xl text-lg">
+              Explore our curated collection of Adult Visual Novels. Use the search and filters 
+              below to find your next favorite story.
             </p>
           </div>
-        </div>
 
-        <div className={cn(
-          "w-full transition-all duration-300 ease-in-out",
-          isScrolled ? "sticky top-16 bg-background/95 backdrop-blur z-40 shadow-sm" : ""
-        )}>
-          <div className="container py-6">
-            <SearchAndFilter
-              searchQuery={searchQuery}
-              onSearchChange={setSearchQuery}
-              selectedGenres={selectedGenres}
-              onGenreToggle={handleGenreToggle}
-              availableGenres={genres}
-              isSticky={isScrolled}
-            />
-          </div>
-        </div>
+          <SearchAndFilter
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            selectedGenres={selectedGenres}
+            onGenreToggle={handleGenreToggle}
+            availableGenres={genres}
+          />
 
-        <div className="container space-y-12 py-8">
           {featuredAVNs.length > 0 && (
             <section className="space-y-4">
               <h2 className="text-2xl font-semibold">Featured AVNs</h2>
