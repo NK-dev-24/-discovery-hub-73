@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Search, SlidersHorizontal, ChevronDown } from "lucide-react";
 import { Input } from "./ui/input";
@@ -44,14 +43,14 @@ export const FilterBar = ({
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
 
   const FilterOptions = () => (
-    <div className="flex items-center gap-2 overflow-x-auto pb-2 hide-scrollbar max-w-full">
-      <div className="flex-none flex items-center gap-2">
+    <div className="flex items-center gap-2 overflow-x-auto pb-2 max-w-full scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
+      <div className="flex items-center gap-2 flex-nowrap min-w-0">
         {filterCategories.map((category) => (
           <DropdownMenu key={category.label}>
             <DropdownMenuTrigger asChild>
               <Button
                 variant="outline"
-                className="flex items-center gap-1 whitespace-nowrap bg-white/80 backdrop-blur"
+                className="flex items-center gap-1 whitespace-nowrap bg-white/80 backdrop-blur flex-shrink-0"
               >
                 {category.label}
                 <ChevronDown className="h-4 w-4" />
@@ -66,17 +65,15 @@ export const FilterBar = ({
             </DropdownMenuContent>
           </DropdownMenu>
         ))}
-      </div>
       
-      <div className="h-full border-l mx-2 flex-none" />
+        <div className="h-full border-l mx-2 flex-shrink-0" />
       
-      <div className="flex-none flex items-center gap-2">
         {availableGenres.map((genre) => (
           <Badge
             key={genre}
             variant={selectedGenres.includes(genre) ? "default" : "outline"}
             className="cursor-pointer whitespace-nowrap py-1.5 px-4 text-sm transition-all duration-200 
-                     hover:scale-105 active:scale-95 hover:bg-primary/90 shadow-sm bg-white/80 backdrop-blur"
+                     hover:scale-105 active:scale-95 hover:bg-primary/90 shadow-sm bg-white/80 backdrop-blur flex-shrink-0"
             onClick={() => onGenreToggle(genre)}
           >
             {genre}
@@ -92,7 +89,7 @@ export const FilterBar = ({
       isSticky ? "sticky top-16 shadow-sm" : ""
     )}>
       <div className="container px-4 max-w-screen-2xl mx-auto">
-        <div className="flex flex-col md:flex-row gap-4">
+        <div className="flex flex-col md:flex-row gap-4 w-full">
           {showSearch && (
             <div className="relative flex-shrink-0 w-full md:w-72">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -107,8 +104,45 @@ export const FilterBar = ({
           )}
 
           {/* Desktop Filters */}
-          <div className="hidden md:block flex-grow">
-            <FilterOptions />
+          <div className="hidden md:block flex-grow overflow-hidden">
+            <div className="w-full overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
+              <div className="flex items-center gap-2 flex-nowrap pb-2">
+                {filterCategories.map((category) => (
+                  <DropdownMenu key={category.label}>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className="flex items-center gap-1 whitespace-nowrap bg-white/80 backdrop-blur flex-shrink-0"
+                      >
+                        {category.label}
+                        <ChevronDown className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="start">
+                      {category.options.map((option) => (
+                        <DropdownMenuItem key={option}>
+                          {option}
+                        </DropdownMenuItem>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                ))}
+              
+                <div className="h-full border-l mx-2 flex-shrink-0" />
+              
+                {availableGenres.map((genre) => (
+                  <Badge
+                    key={genre}
+                    variant={selectedGenres.includes(genre) ? "default" : "outline"}
+                    className="cursor-pointer whitespace-nowrap py-1.5 px-4 text-sm transition-all duration-200 
+                             hover:scale-105 active:scale-95 hover:bg-primary/90 shadow-sm bg-white/80 backdrop-blur flex-shrink-0"
+                    onClick={() => onGenreToggle(genre)}
+                  >
+                    {genre}
+                  </Badge>
+                ))}
+              </div>
+            </div>
           </div>
 
           {/* Mobile Filter Button */}
