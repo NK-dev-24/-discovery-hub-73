@@ -1,6 +1,6 @@
 
 import { Link } from "react-router-dom";
-import { Twitter, Discord, Heart, Github } from "lucide-react";
+import { Twitter, Heart } from "lucide-react";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
 
@@ -21,16 +21,6 @@ export const Footer = () => {
               <Button variant="ghost" size="icon" asChild>
                 <a href="https://twitter.com/avndirectory" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
                   <Twitter className="h-4 w-4" />
-                </a>
-              </Button>
-              <Button variant="ghost" size="icon" asChild>
-                <a href="https://discord.gg/avndirectory" target="_blank" rel="noopener noreferrer" aria-label="Discord">
-                  <Discord className="h-4 w-4" />
-                </a>
-              </Button>
-              <Button variant="ghost" size="icon" asChild>
-                <a href="https://github.com/avndirectory" target="_blank" rel="noopener noreferrer" aria-label="Github">
-                  <Github className="h-4 w-4" />
                 </a>
               </Button>
             </div>
