@@ -13,23 +13,23 @@ interface AVNCardProps {
 
 export const AVNCard = ({ avn }: AVNCardProps) => {
   return (
-    <Link to={`/avn/${avn.id}`} className="block w-full max-w-sm">
+    <Link to={`/avn/${avn.id}`} className="block w-full">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         whileHover={{ scale: 1.02 }}
         transition={{ type: "spring", stiffness: 400, damping: 17 }}
       >
-        <Card className="group relative overflow-hidden bg-gradient-to-br from-background to-background/95 dark:from-background/80 dark:to-background border border-border/50 hover:border-primary/50 transition-all duration-300 rounded-2xl">
+        <Card className="group relative overflow-hidden bg-gradient-to-br from-background to-background/95 dark:from-background/80 dark:to-background border border-border/50 hover:border-primary/50 transition-all duration-300 rounded-2xl h-full">
           {/* Glow Effect */}
           <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
             <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-purple-500/10 dark:from-primary/20 dark:to-purple-500/20 blur-xl" />
           </div>
 
           {/* Main Content */}
-          <div className="relative z-10">
+          <div className="relative z-10 flex flex-col h-full">
             {/* Image Section */}
-            <div className="relative h-48 overflow-hidden">
+            <div className="relative aspect-[16/9] overflow-hidden">
               {/* Gradient overlay for text readability */}
               <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/30 to-transparent z-10" />
 
@@ -63,8 +63,8 @@ export const AVNCard = ({ avn }: AVNCardProps) => {
             </div>
 
             {/* Content Section */}
-            <div className="relative z-20 p-4 space-y-3">
-              <div className="space-y-2">
+            <div className="relative z-20 p-4 space-y-3 flex-grow flex flex-col">
+              <div className="space-y-2 flex-grow">
                 <h3 className="text-xl font-bold tracking-tight text-foreground group-hover:text-primary transition-colors">
                   {avn.title}
                 </h3>

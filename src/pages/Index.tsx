@@ -104,11 +104,11 @@ const Index = () => {
           showSearch={isScrolled}
         />
 
-        <div className="container py-12 space-y-12">
+        <div className="container max-w-screen-2xl mx-auto px-4 py-12 space-y-12">
           {featuredAVNs.length > 0 && (
             <section className="space-y-4">
               <h2 className="text-2xl font-semibold">Featured AVNs</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
                 {featuredAVNs.map((avn) => (
                   <AVNCard key={avn.id} avn={avn} />
                 ))}
@@ -118,7 +118,7 @@ const Index = () => {
 
           <section className="space-y-4">
             <h2 className="text-2xl font-semibold">All AVNs</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
               {filteredAVNs.map((avn) => (
                 <AVNCard key={avn.id} avn={avn} />
               ))}

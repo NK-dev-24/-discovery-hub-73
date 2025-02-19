@@ -44,39 +44,45 @@ export const FilterBar = ({
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
 
   const FilterOptions = () => (
-    <div className="flex items-center gap-2 overflow-x-auto pb-2 hide-scrollbar">
-      {filterCategories.map((category) => (
-        <DropdownMenu key={category.label}>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="outline"
-              className="flex items-center gap-1 whitespace-nowrap bg-white/80 backdrop-blur"
-            >
-              {category.label}
-              <ChevronDown className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start">
-            {category.options.map((option) => (
-              <DropdownMenuItem key={option}>
-                {option}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      ))}
-      <div className="h-full border-l mx-2" />
-      {availableGenres.map((genre) => (
-        <Badge
-          key={genre}
-          variant={selectedGenres.includes(genre) ? "default" : "outline"}
-          className="cursor-pointer whitespace-nowrap py-1.5 px-4 text-sm transition-all duration-200 
-                   hover:scale-105 active:scale-95 hover:bg-primary/90 shadow-sm bg-white/80 backdrop-blur"
-          onClick={() => onGenreToggle(genre)}
-        >
-          {genre}
-        </Badge>
-      ))}
+    <div className="flex items-center gap-2 overflow-x-auto pb-2 hide-scrollbar max-w-full">
+      <div className="flex-none flex items-center gap-2">
+        {filterCategories.map((category) => (
+          <DropdownMenu key={category.label}>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                className="flex items-center gap-1 whitespace-nowrap bg-white/80 backdrop-blur"
+              >
+                {category.label}
+                <ChevronDown className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start">
+              {category.options.map((option) => (
+                <DropdownMenuItem key={option}>
+                  {option}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ))}
+      </div>
+      
+      <div className="h-full border-l mx-2 flex-none" />
+      
+      <div className="flex-none flex items-center gap-2">
+        {availableGenres.map((genre) => (
+          <Badge
+            key={genre}
+            variant={selectedGenres.includes(genre) ? "default" : "outline"}
+            className="cursor-pointer whitespace-nowrap py-1.5 px-4 text-sm transition-all duration-200 
+                     hover:scale-105 active:scale-95 hover:bg-primary/90 shadow-sm bg-white/80 backdrop-blur"
+            onClick={() => onGenreToggle(genre)}
+          >
+            {genre}
+          </Badge>
+        ))}
+      </div>
     </div>
   );
 
@@ -85,7 +91,7 @@ export const FilterBar = ({
       "w-full transition-all duration-300 ease-in-out py-4 bg-background/95 backdrop-blur z-40",
       isSticky ? "sticky top-16 shadow-sm" : ""
     )}>
-      <div className="container">
+      <div className="container px-4 max-w-screen-2xl mx-auto">
         <div className="flex flex-col md:flex-row gap-4">
           {showSearch && (
             <div className="relative flex-shrink-0 w-full md:w-72">
@@ -106,7 +112,7 @@ export const FilterBar = ({
           </div>
 
           {/* Mobile Filter Button */}
-          <div className="md:hidden">
+          <div className="md:hidden w-full">
             <Sheet open={isMobileFiltersOpen} onOpenChange={setIsMobileFiltersOpen}>
               <SheetTrigger asChild>
                 <Button variant="outline" className="w-full">
@@ -114,7 +120,7 @@ export const FilterBar = ({
                   Filters
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-full sm:w-96">
+              <SheetContent side="right" className="w-full sm:max-w-md">
                 <SheetHeader>
                   <SheetTitle>Filters</SheetTitle>
                 </SheetHeader>
