@@ -38,7 +38,7 @@ export const avns: AVN[] = [
     rating: 4.5,
     reviewCount: 145,
     featured: false,
-    image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7",
+    image: "https://i.ytimg.com/vi/-IjJHYzTa5k/maxresdefault.jpg",
   },
   {
     id: "4",
@@ -51,7 +51,7 @@ export const avns: AVN[] = [
     rating: 4.7,
     reviewCount: 203,
     featured: true,
-    image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
+    image: "https://img.itch.zone/aW1nLzE4OTkxODkwLnBuZw==/original/%2FqXjL9.png",
   },
   {
     id: "5",

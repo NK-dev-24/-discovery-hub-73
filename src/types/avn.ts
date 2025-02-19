@@ -1,4 +1,3 @@
-
 export type Genre = 
   | "Fantasy" 
   | "Romance" 
@@ -19,5 +18,6 @@ export type AVN = {
   rating: number;
   reviewCount: number;
   featured: boolean;
+  isNew?: boolean;
   image?: string;
 };

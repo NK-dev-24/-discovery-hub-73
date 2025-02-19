@@ -60,42 +60,42 @@ const Index = () => {
       <Header />
       
       <main className="flex-1">
-        <section className="relative w-full min-h-[40vh] flex items-center justify-center bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900">
-          <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10" />
+        <section className="relative w-full min-h-[40vh] flex items-center justify-center cyber-gradient overflow-hidden">
+          <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-5" />
           <div 
-            className="absolute inset-0 bg-gradient-to-b from-transparent to-background/10"
+            className="absolute inset-0"
             style={{
-              backgroundImage: `radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 70%)`
+              backgroundImage: `radial-gradient(circle at center, hsl(var(--primary) / 0.15) 0%, transparent 70%)`
             }}
           />
           
-          <div className="container max-w-4xl mx-auto px-4 py-12 space-y-6 relative z-10">
-            <div className="text-center space-y-3">
-              <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-white/90">
+          <div className="container max-w-4xl mx-auto px-4 py-12 space-y-8 relative z-10">
+            <div className="text-center space-y-4">
+              <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground neon-text">
                 Discover Your Next AVN Adventure
               </h1>
-              <p className="text-white/60 text-base md:text-lg max-w-xl mx-auto">
-                Explore our curated collection of Adult Visual Novels. Find your perfect story.
+              <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
+                Enter a world of immersive storytelling and unforgettable characters
               </p>
             </div>
             
             <div className={cn(
-              "transition-all duration-300 max-w-2xl mx-auto",
-              isScrolled ? "opacity-0 scale-95" : "opacity-100 scale-100"
+              "transition-all duration-300 max-w-2xl mx-auto transform",
+              isScrolled ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"
             )}>
               <div className="relative group">
-                <div className="absolute -inset-1 bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-blue-500/20 rounded-xl blur-xl group-hover:blur-2xl transition-all duration-300 group-hover:-inset-0.5 opacity-75" />
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--secondary))] rounded-xl opacity-75 blur group-hover:opacity-100 transition duration-300" />
                 <div className="relative">
-                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-white/40 group-focus-within:text-white/80 transition-colors duration-200" />
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors duration-200" />
                   <Input
                     type="search"
                     placeholder="Search AVNs by title, genre, or developer..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-full h-12 pl-12 pr-4 text-base rounded-lg shadow-lg transition-all duration-200 
-                             bg-white/10 backdrop-blur-md border-white/10
-                             focus:bg-white/15 focus:border-white/20 focus:ring-2 focus:ring-purple-500/20
-                             text-white placeholder:text-white/40"
+                             bg-background/80 backdrop-blur-md border-muted/50
+                             focus:bg-background/90 focus:border-primary focus:ring-2 focus:ring-primary/20
+                             text-foreground placeholder:text-muted-foreground"
                   />
                 </div>
               </div>
@@ -115,9 +115,17 @@ const Index = () => {
 
         <div className="container max-w-screen-2xl mx-auto px-4 py-12">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
-            {filteredAVNs.map((avn) => (
-              <AVNCard key={avn.id} avn={avn} />
-            ))}
+            {filteredAVNs.length > 0 ? (
+              filteredAVNs.map((avn) => (
+                <AVNCard key={avn.id} avn={avn} />
+              ))
+            ) : (
+              <div className="col-span-full text-center py-12">
+                <p className="text-xl text-muted-foreground">
+                  No AVNs found matching your criteria
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </main>

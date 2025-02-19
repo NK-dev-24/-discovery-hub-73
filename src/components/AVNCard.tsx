@@ -1,4 +1,3 @@
-
 import { AVN } from "@/types/avn";
 import { Card } from "./ui/card";
 import { Badge } from "./ui/badge";
@@ -12,27 +11,32 @@ interface AVNCardProps {
 }
 
 export const AVNCard = ({ avn }: AVNCardProps) => {
+  // Determine tag based on AVN properties
+  const getTag = () => {
+    if (avn.featured) return "Featured";
+    if (avn.isNew) return "New";
+    return undefined;
+  };
+
   return (
-    <Link to={`/avn/${avn.id}`} className="block w-full">
+    <Link to={`/avn/${avn.id}`} className="block">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         whileHover={{ scale: 1.02 }}
         transition={{ type: "spring", stiffness: 400, damping: 17 }}
       >
-        <Card className="group relative overflow-hidden bg-gradient-to-br from-background to-background/95 dark:from-background/80 dark:to-background border border-border/50 hover:border-primary/50 transition-all duration-300 rounded-2xl h-full">
+        <Card className="group relative overflow-hidden border border-border/40 bg-gradient-to-br from-background/80 to-background">
           {/* Glow Effect */}
           <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-purple-500/10 dark:from-primary/20 dark:to-purple-500/20 blur-xl" />
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-purple-500/20 blur-xl" />
           </div>
 
           {/* Main Content */}
-          <div className="relative z-10 flex flex-col h-full">
+          <div className="relative z-10">
             {/* Image Section */}
-            <div className="relative aspect-[16/9] overflow-hidden">
-              {/* Gradient overlay for text readability */}
-              <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/30 to-transparent z-10" />
-
+            <div className="relative h-52 overflow-hidden rounded-t-lg">
+              <div className="absolute inset-0 bg-gradient-to-b from-black/0 via-black/0 to-background z-10" />
               <motion.div
                 className="absolute inset-0 bg-cover bg-center"
                 style={{ backgroundImage: `url(${avn.image})` }}
@@ -40,42 +44,47 @@ export const AVNCard = ({ avn }: AVNCardProps) => {
                 transition={{ duration: 0.4 }}
               />
 
-              {/* Featured Badge */}
-              {avn.featured && (
-                <div className="absolute top-3 right-3 z-20">
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 }}
+              {/* Tag with New Animation Effect */}
+              {getTag() && (
+                <div className="absolute top-4 right-4 z-20">
+                  <Badge
+                    variant="secondary"
+                    className="relative overflow-hidden bg-black/30 backdrop-blur-md border border-primary/50 px-3 py-1.5"
                   >
-                    <Badge
-                      variant="secondary"
-                      className="relative overflow-hidden bg-white/90 dark:bg-black/30 backdrop-blur-md border-0 shadow-sm px-2.5 py-1 rounded-full"
-                    >
-                      <span className="relative z-10 flex items-center gap-1.5 text-primary font-medium text-xs">
-                        <Sparkles className="w-3 h-3" />
-                        Featured
-                      </span>
-                    </Badge>
-                  </motion.div>
+                    <span className="relative z-10 flex items-center gap-2 text-primary-foreground">
+                      <Sparkles className="w-3 h-3" />
+                      {getTag()}
+                    </span>
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/40 to-transparent"
+                      initial={{ x: "-100%" }}
+                      animate={{ x: "100%" }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        repeatDelay: 1
+                      }}
+                    />
+                  </Badge>
                 </div>
               )}
             </div>
 
             {/* Content Section */}
-            <div className="relative z-20 p-4 space-y-3 flex-grow flex flex-col">
-              <div className="space-y-2 flex-grow">
-                <h3 className="text-xl font-bold tracking-tight text-foreground group-hover:text-primary transition-colors">
+            <div className="relative z-20 p-6 space-y-4">
+              <div className="space-y-2">
+                <h3 className="text-xl font-semibold tracking-tight text-foreground transition-colors group-hover:text-primary">
                   {avn.title}
                 </h3>
-                <p className="text-sm text-muted-foreground/80 line-clamp-2">
+                <p className="text-sm text-muted-foreground/90 line-clamp-2">
                   {avn.description}
                 </p>
               </div>
 
               {/* Custom Button */}
-              <Button className="w-full h-10 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 text-primary-foreground border-0 shadow-md hover:shadow-lg shadow-primary/10 hover:shadow-primary/20 transition-all duration-300 rounded-xl">
-                <span className="flex items-center gap-2 font-semibold">
+              <Button className="w-full bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 text-primary-foreground border-0 shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/35 transition-all duration-300">
+                <span className="flex items-center gap-2">
                   Explore Now
                   <ExternalLink className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                 </span>
