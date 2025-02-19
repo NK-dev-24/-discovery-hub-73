@@ -29,7 +29,7 @@ export const AVNCard = ({ avn }: AVNCardProps) => {
           {/* Main Content */}
           <div className="relative z-10">
             {/* Image Section */}
-            <div className="relative h-64 overflow-hidden">
+            <div className="relative h-48 overflow-hidden">
               {/* Gradient overlay for text readability */}
               <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/30 to-transparent z-10" />
 
@@ -42,7 +42,7 @@ export const AVNCard = ({ avn }: AVNCardProps) => {
 
               {/* Featured Badge */}
               {avn.featured && (
-                <div className="absolute top-4 right-4 z-20">
+                <div className="absolute top-3 right-3 z-20">
                   <motion.div
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -50,9 +50,9 @@ export const AVNCard = ({ avn }: AVNCardProps) => {
                   >
                     <Badge
                       variant="secondary"
-                      className="relative overflow-hidden bg-white/90 dark:bg-black/30 backdrop-blur-md border-0 shadow-sm px-3 py-1.5 rounded-full"
+                      className="relative overflow-hidden bg-white/90 dark:bg-black/30 backdrop-blur-md border-0 shadow-sm px-2.5 py-1 rounded-full"
                     >
-                      <span className="relative z-10 flex items-center gap-2 text-primary font-medium text-sm">
+                      <span className="relative z-10 flex items-center gap-1.5 text-primary font-medium text-xs">
                         <Sparkles className="w-3 h-3" />
                         Featured
                       </span>
@@ -60,26 +60,24 @@ export const AVNCard = ({ avn }: AVNCardProps) => {
                   </motion.div>
                 </div>
               )}
-
-              {/* Title overlay */}
-              <div className="absolute bottom-0 left-0 right-0 z-20 p-6 pt-16 bg-gradient-to-t from-background via-background/95 to-transparent">
-                <h3 className="text-2xl font-bold tracking-tight text-foreground group-hover:text-primary transition-colors">
-                  {avn.title}
-                </h3>
-              </div>
             </div>
 
             {/* Content Section */}
-            <div className="relative z-20 p-6 pt-4 space-y-6">
-              <p className="text-base text-muted-foreground/80 line-clamp-2">
-                {avn.description}
-              </p>
+            <div className="relative z-20 p-4 space-y-3">
+              <div className="space-y-2">
+                <h3 className="text-xl font-bold tracking-tight text-foreground group-hover:text-primary transition-colors">
+                  {avn.title}
+                </h3>
+                <p className="text-sm text-muted-foreground/80 line-clamp-2">
+                  {avn.description}
+                </p>
+              </div>
 
               {/* Custom Button */}
-              <Button className="w-full h-12 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 text-primary-foreground border-0 shadow-md hover:shadow-lg shadow-primary/10 hover:shadow-primary/20 transition-all duration-300 rounded-xl">
-                <span className="flex items-center gap-2 text-lg font-semibold">
+              <Button className="w-full h-10 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 text-primary-foreground border-0 shadow-md hover:shadow-lg shadow-primary/10 hover:shadow-primary/20 transition-all duration-300 rounded-xl">
+                <span className="flex items-center gap-2 font-semibold">
                   Explore Now
-                  <ExternalLink className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
+                  <ExternalLink className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                 </span>
               </Button>
             </div>
