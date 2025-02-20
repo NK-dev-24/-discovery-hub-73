@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Search, SlidersHorizontal, ChevronDown } from "lucide-react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
@@ -50,7 +50,7 @@ export const FilterBar = ({
             <DropdownMenuTrigger asChild>
               <Button
                 variant="outline"
-                className="flex items-center gap-1 whitespace-nowrap bg-white/80 backdrop-blur flex-shrink-0"
+                className="flex items-center gap-1 whitespace-nowrap bg-background/95 backdrop-blur flex-shrink-0"
               >
                 {category.label}
                 <ChevronDown className="h-4 w-4" />
@@ -72,8 +72,9 @@ export const FilterBar = ({
           <Badge
             key={genre}
             variant={selectedGenres.includes(genre) ? "default" : "outline"}
-            className="cursor-pointer whitespace-nowrap py-1.5 px-4 text-sm transition-all duration-200 
-                     hover:scale-105 active:scale-95 hover:bg-primary/90 shadow-sm bg-white/80 backdrop-blur flex-shrink-0"
+            className={`cursor-pointer whitespace-nowrap py-1.5 px-4 text-sm transition-all duration-200 
+                     ${selectedGenres.includes(genre) ? "bg-electric-magenta text-white font-bold" : "bg-gray-800 text-gray-200"}
+                     hover:scale-105 active:scale-95 hover:bg-primary/90 shadow-sm flex-shrink-0`}
             onClick={() => onGenreToggle(genre)}
           >
             {genre}
@@ -112,7 +113,7 @@ export const FilterBar = ({
                     <DropdownMenuTrigger asChild>
                       <Button
                         variant="outline"
-                        className="flex items-center gap-1 whitespace-nowrap bg-white/80 backdrop-blur flex-shrink-0"
+                        className="flex items-center gap-1 whitespace-nowrap bg-background/95 backdrop-blur flex-shrink-0"
                       >
                         {category.label}
                         <ChevronDown className="h-4 w-4" />
@@ -134,8 +135,9 @@ export const FilterBar = ({
                   <Badge
                     key={genre}
                     variant={selectedGenres.includes(genre) ? "default" : "outline"}
-                    className="cursor-pointer whitespace-nowrap py-1.5 px-4 text-sm transition-all duration-200 
-                             hover:scale-105 active:scale-95 hover:bg-primary/90 shadow-sm bg-white/80 backdrop-blur flex-shrink-0"
+                    className={`cursor-pointer whitespace-nowrap py-1.5 px-4 text-sm transition-all duration-200 
+                             ${selectedGenres.includes(genre) ? "bg-electric-magenta text-white font-bold" : "bg-gray-800 text-gray-200"}
+                             hover:scale-105 active:scale-95 hover:bg-primary/90 shadow-sm flex-shrink-0`}
                     onClick={() => onGenreToggle(genre)}
                   >
                     {genre}
