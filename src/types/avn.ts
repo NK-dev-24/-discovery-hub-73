@@ -1,4 +1,3 @@
-
 export type Genre = 
   | "Fantasy" 
   | "Romance" 
@@ -7,6 +6,15 @@ export type Genre =
   | "Horror" 
   | "Comedy" 
   | "Drama";
+
+export type Status = "Completed" | "Ongoing" | "Hiatus" | "Planned" | "Dropped";
+
+export type Platform = "Windows" | "Mac" | "Linux" | "Android" | "iOS" | "Web";
+
+export type Distribution = {
+  platform: "Steam" | "Itch.io" | "Custom" | "Other";
+  url: string;
+};
 
 export type AVN = {
   id: string;
@@ -19,5 +27,13 @@ export type AVN = {
   rating: number;
   reviewCount: number;
   featured: boolean;
+  isNew?: boolean;
   image?: string;
+  status: Status;
+  platforms: Platform[];
+  distribution: Distribution[];
+  version?: string;
+  lastUpdated?: string;
+  screenshots?: string[];
+  downloadUrl?: string;
 };
