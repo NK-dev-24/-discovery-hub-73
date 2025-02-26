@@ -1,10 +1,10 @@
 
-import { Component, ErrorInfo, ReactNode } from "react";
+import React, { Component, ErrorInfo } from "react";
 import { Button } from "./ui/button";
-import { AlertCircle } from "lucide-react";
+import { AlertTriangle } from "lucide-react";
 
 interface Props {
-  children: ReactNode;
+  children: React.ReactNode;
 }
 
 interface State {
@@ -28,19 +28,18 @@ export class ErrorBoundary extends Component<Props, State> {
   public render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-[400px] flex items-center justify-center">
-          <div className="text-center space-y-4 p-6">
-            <AlertCircle className="w-12 h-12 text-destructive mx-auto" />
-            <h2 className="text-2xl font-bold text-foreground">Something went wrong</h2>
-            <p className="text-muted-foreground">We apologize for the inconvenience</p>
-            <Button 
-              onClick={() => window.location.reload()}
-              variant="outline"
-              className="mt-4"
-            >
-              Refresh Page
-            </Button>
-          </div>
+        <div className="min-h-[400px] flex flex-col items-center justify-center p-4">
+          <AlertTriangle className="h-12 w-12 text-destructive mb-4" />
+          <h2 className="text-xl font-semibold mb-2">Something went wrong</h2>
+          <p className="text-muted-foreground mb-4 text-center max-w-md">
+            We apologize for the inconvenience. Please try refreshing the page.
+          </p>
+          <Button 
+            onClick={() => window.location.reload()} 
+            variant="outline"
+          >
+            Refresh Page
+          </Button>
         </div>
       );
     }

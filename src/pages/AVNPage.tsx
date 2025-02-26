@@ -109,7 +109,7 @@ export default function AVNPage() {
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Directory
-          </Button>n 
+          </Button>
         </motion.div>
       </div>
     );
@@ -120,10 +120,12 @@ export default function AVNPage() {
       <Helmet>
         <title>{`${avn.title} - AVN Directory`}</title>
         <meta name="description" content={avn.description} />
-        {/* Open Graph tags for better social sharing */}
         <meta property="og:title" content={`${avn.title} - AVN Directory`} />
         <meta property="og:description" content={avn.description} />
         {avn.image && <meta property="og:image" content={avn.image} />}
+        {/* Remove preload for external resources */}
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href={window.location.href} />
       </Helmet>
 
       <div className="min-h-screen bg-background">

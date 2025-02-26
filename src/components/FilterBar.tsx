@@ -14,13 +14,14 @@ import { cn } from "@/lib/utils";
 import { Genre } from "@/types/avn";
 
 interface FilterBarProps {
-  searchQuery: string;
-  onSearchChange: (query: string) => void;
+  searchQuery?: string;
+  onSearchChange?: (query: string) => void;
   selectedGenres: Genre[];
   onGenreToggle: (genre: Genre) => void;
-  availableGenres: Genre[];
+  availableGenres?: Genre[];
   isSticky?: boolean;
   showSearch?: boolean;
+  className?: string;
 }
 
 const filterCategories = [
@@ -32,13 +33,14 @@ const filterCategories = [
 ];
 
 export const FilterBar = ({
-  searchQuery,
+  searchQuery = "",
   onSearchChange,
   selectedGenres,
   onGenreToggle,
-  availableGenres,
+  availableGenres = [],
   isSticky = false,
   showSearch = false,
+  className,
 }: FilterBarProps) => {
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
 
@@ -87,7 +89,8 @@ export const FilterBar = ({
   return (
     <div className={cn(
       "w-full transition-all duration-300 ease-in-out py-4 bg-background/95 backdrop-blur z-40",
-      isSticky ? "sticky top-16 shadow-sm" : ""
+      isSticky ? "sticky top-16 shadow-sm" : "",
+      className
     )}>
       <div className="container px-4 max-w-screen-2xl mx-auto">
         <div className="flex flex-col md:flex-row gap-4 w-full">
