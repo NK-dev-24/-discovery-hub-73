@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { FilterBar } from "@/components/FilterBar";
 import { X } from "lucide-react";
 import { Genre } from "@/types/avn";
+import { genres } from "@/data/avns";
 
 interface SearchAndFilterProps {
   isOpen: boolean;
@@ -31,6 +32,7 @@ export const SearchAndFilter = ({
           <FilterBar
             selectedGenres={selectedGenres}
             onGenreToggle={onGenreToggle}
+            availableGenres={genres}
             className="flex-col gap-2"
           />
         </div>
