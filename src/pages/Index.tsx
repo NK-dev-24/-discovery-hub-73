@@ -1,4 +1,4 @@
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect, Suspense, useCallback } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { FilterBar } from "@/components/FilterBar";
@@ -12,16 +12,35 @@ import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/components/ui/use-toast";
+import debounce from "lodash/debounce";
+import { Analytics } from "@vercel/analytics/react";
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [selectedGenres, setSelectedGenres] = useState<Genre[]>([]);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
 
+  const debouncedSearch = useCallback(
+    debounce((term: string) => {
+      setDebouncedSearchTerm(term);
+      if (term.length > 0) {
+        console.log("Search tracked:", term);
+      }
+    }, 300),
+    []
+  );
+
   useEffect(() => {
-    // Simulate initial loading
+    debouncedSearch(searchQuery);
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [searchQuery, debouncedSearch]);
+
+  useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 1000);
@@ -42,10 +61,10 @@ const Index = () => {
   const filteredAVNs = avns.filter((avn) => {
     try {
       const matchesSearch =
-        searchQuery === "" ||
-        avn.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        avn.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        avn.developer.toLowerCase().includes(searchQuery.toLowerCase());
+        debouncedSearchTerm === "" ||
+        avn.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
+        avn.description.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
+        avn.developer.toLowerCase().includes(debouncedSearchTerm.toLowerCase());
 
       const matchesGenres =
         selectedGenres.length === 0 ||
@@ -69,12 +88,14 @@ const Index = () => {
         ? prev.filter((g) => g !== genre)
         : [...prev, genre]
     );
+    console.log("Genre toggled:", genre);
   };
 
   const featuredAVNs = filteredAVNs.filter(avn => avn.featured);
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
+      <Analytics />
       <Helmet>
         <title>AVN Directory - Discover Amazing Visual Novels</title>
         <meta 
