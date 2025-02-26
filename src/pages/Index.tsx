@@ -97,17 +97,18 @@ const Index = () => {
     <div className="min-h-screen flex flex-col bg-background">
       <Analytics />
       <Helmet>
-        <title>AVN Directory - Discover Amazing Visual Novels</title>
-        <meta 
-          name="description" 
-          content="Explore our curated collection of Adult Visual Novels. Find your next favorite story across various genres including Fantasy, Romance, Sci-Fi, and more." 
-        />
+        <title>AVN Directory - Visual Novel Directory</title>
+        <meta name="description" content="Explore our curated collection of visual novels." />
+        <meta property="og:title" content="AVN Directory - Visual Novel Directory" />
+        <meta property="og:description" content="Explore our curated collection of visual novels." />
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href={window.location.href} />
       </Helmet>
-
-      <Header />
       
       <ErrorBoundary>
-        <main className="flex-1">
+        <Header />
+        
+        <main className="flex-1 container py-8">
           <section className="relative w-full min-h-[40vh] md:min-h-[60vh] flex items-center justify-center cyber-gradient overflow-hidden">
             <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-5" />
             <div className="container max-w-4xl mx-auto px-4 py-8 md:py-12 space-y-6 md:space-y-8 relative z-10">
@@ -182,9 +183,9 @@ const Index = () => {
             </Suspense>
           </div>
         </main>
+        
+        <Footer />
       </ErrorBoundary>
-
-      <Footer />
     </div>
   );
 };
