@@ -1,4 +1,4 @@
-import { useState, useEffect, Suspense, useCallback } from "react";
+import { useState, useEffect, Suspense, useCallback, useMemo } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { FilterBar } from "@/components/FilterBar";
@@ -41,7 +41,13 @@ const Index = () => {
   const [selectedGenres, setSelectedGenres] = useState<Genre[]>([]);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [activeSlide, setActiveSlide] = useState(0);
   const { toast } = useToast();
+
+  // Get featured AVNs before filtering
+  const featuredAVNs = useMemo(() => 
+    avns.filter(avn => avn.featured).slice(0, 3)
+  , []);
 
   const debouncedSearch = useCallback(
     debounce((term: string) => {
@@ -78,6 +84,14 @@ const Index = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveSlide((current) => (current + 1) % 3);
+    }, 5000); // Change slide every 5 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
   const filteredAVNs = avns.filter((avn) => {
     try {
       const matchesSearch =
@@ -110,8 +124,6 @@ const Index = () => {
     );
     console.log("Genre toggled:", genre);
   };
-
-  const featuredAVNs = filteredAVNs.filter(avn => avn.featured);
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -182,34 +194,22 @@ const Index = () => {
                         </button>
                       </div>
                     </div>
-
-                    {/* Quick filters */}
-                    <div className="flex gap-2 overflow-x-auto hide-scrollbar px-0.5">
-                      {['New', 'Popular', 'Top Rated'].map((filter) => (
-                        <button
-                          key={filter}
-                          className="px-4 py-1.5 rounded-full text-sm whitespace-nowrap
-                                   bg-muted/30 hover:bg-muted/50
-                                   border border-muted-foreground/10
-                                   transition-all duration-300
-                                   hover:border-primary/20 hover:text-primary-foreground/90"
-                        >
-                          {filter}
-                        </button>
-                      ))}
-                    </div>
                   </div>
                 </div>
 
                 {/* Right column - Featured AVNs */}
                 <div className="relative w-full md:w-[300px] h-[180px] md:h-[220px] overflow-hidden rounded-lg featured-card">
-                  <div className="absolute inset-0 flex gap-4 snap-x snap-mandatory overflow-x-auto hide-scrollbar">
-                    {featuredAVNs.slice(0, 3).map((avn) => (
+                  <div 
+                    className="absolute inset-0 flex transition-transform duration-500 ease-out"
+                    style={{ transform: `translateX(-${activeSlide * 100}%)` }}
+                  >
+                    {featuredAVNs.map((avn, index) => (
                       <div
                         key={avn.id}
-                        className="relative w-full flex-none snap-center"
+                        className="relative w-full flex-none cursor-pointer"
+                        onClick={() => window.location.href = `/avn/${avn.id}`}
                       >
-                        <div className="relative h-full overflow-hidden">
+                        <div className="relative h-full overflow-hidden group">
                           <img
                             src={avn.image || '/placeholder-avn.webp'}
                             alt={avn.title}
@@ -226,15 +226,17 @@ const Index = () => {
                   </div>
                   {/* Navigation dots */}
                   <div className="absolute bottom-2 right-2 flex gap-1.5">
-                    {featuredAVNs.slice(0, 3).map((_, index) => (
-                      <div
+                    {featuredAVNs.map((_, index) => (
+                      <button
                         key={index}
+                        onClick={() => setActiveSlide(index)}
                         className={cn(
                           "h-1.5 rounded-full transition-all duration-300",
-                          index === 0 
+                          index === activeSlide 
                             ? "w-4 bg-primary shadow-lg" 
                             : "w-1.5 bg-muted-foreground/30 hover:bg-primary/40"
                         )}
+                        aria-label={`Go to slide ${index + 1}`}
                       />
                     ))}
                   </div>
@@ -289,4 +291,3 @@ const Index = () => {
 };
 
 export default Index;
-

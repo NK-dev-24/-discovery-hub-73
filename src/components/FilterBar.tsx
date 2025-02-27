@@ -27,9 +27,10 @@ interface FilterBarProps {
 const filterCategories = [
   { label: "Most Popular", options: ["Today", "This Week", "This Month", "All Time"] },
   { label: "New", options: ["Last 24h", "This Week", "This Month"] },
-  { label: "Categories", options: ["Story-rich", "Action", "Dating Sim", "RPG"] },
+  { label: "Categories", options: ["Story-rich", "Action", "Dating Sim", "RPG", "Adventure", "Visual Novel"] },
   { label: "Platform", options: ["Windows", "Mac", "Linux", "Android"] },
   { label: "Pricing", options: ["Free", "Paid", "Early Access"] },
+  { label: "Status", options: ["Completed", "In Development", "On Hold"] }
 ];
 
 export const FilterBar = ({
@@ -44,118 +45,85 @@ export const FilterBar = ({
 }: FilterBarProps) => {
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
 
-  const FilterOptions = () => (
-    <div className="flex items-center gap-2 overflow-x-auto pb-2 max-w-full scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
-      <div className="flex items-center gap-2 flex-nowrap min-w-0">
-        {filterCategories.map((category) => (
-          <DropdownMenu key={category.label}>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                className="flex items-center gap-1 whitespace-nowrap bg-background/95 backdrop-blur flex-shrink-0"
-              >
-                {category.label}
-                <ChevronDown className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start">
-              {category.options.map((option) => (
-                <DropdownMenuItem key={option}>
-                  {option}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        ))}
-      
-        <div className="h-full border-l mx-2 flex-shrink-0" />
-      
-        {availableGenres.map((genre) => (
-          <Badge
-            key={genre}
-            variant={selectedGenres.includes(genre) ? "default" : "outline"}
-            className={`cursor-pointer whitespace-nowrap py-1.5 px-4 text-sm transition-all duration-200 
-                     ${selectedGenres.includes(genre) ? "bg-electric-magenta text-white font-bold" : "bg-gray-800 text-gray-200"}
-                     hover:scale-105 active:scale-95 hover:bg-primary/90 shadow-sm flex-shrink-0`}
-            onClick={() => onGenreToggle(genre)}
-          >
-            {genre}
-          </Badge>
-        ))}
-      </div>
-    </div>
-  );
-
   return (
     <div className={cn(
-      "w-full transition-all duration-300 ease-in-out py-4 bg-background/95 backdrop-blur z-40",
-      isSticky ? "sticky top-16 shadow-sm" : "",
+      "w-full transition-all duration-300 ease-in-out bg-background/95 backdrop-blur z-40",
+      isSticky ? "sticky top-[41px] border-b shadow-sm" : "",
       className
     )}>
-      <div className="container px-4 max-w-screen-2xl mx-auto">
-        <div className="flex flex-col md:flex-row gap-4 w-full">
-          {showSearch && (
-            <div className="relative flex-shrink-0 w-full md:w-72">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+      <div className="container">
+        <div className="flex items-center gap-3 h-12 overflow-x-auto hide-scrollbar">
+          {/* Search Input - Only Visible when Sticky */}
+          {isSticky && (
+            <div className="relative flex-shrink-0 w-64">
+              <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 type="search"
                 placeholder="Search AVNs..."
                 value={searchQuery}
-                onChange={(e) => onSearchChange(e.target.value)}
-                className="w-full pl-9 h-10"
+                onChange={(e) => onSearchChange?.(e.target.value)}
+                className="w-full h-8 pl-8 pr-3 text-sm bg-muted/50 border-0 rounded-md
+                          focus:ring-1 focus:ring-primary/20 focus:bg-muted/70"
               />
             </div>
           )}
 
           {/* Desktop Filters */}
-          <div className="hidden md:block flex-grow overflow-hidden">
-            <div className="w-full overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
-              <div className="flex items-center gap-2 flex-nowrap pb-2">
-                {filterCategories.map((category) => (
-                  <DropdownMenu key={category.label}>
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        variant="outline"
-                        className="flex items-center gap-1 whitespace-nowrap bg-background/95 backdrop-blur flex-shrink-0"
-                      >
-                        {category.label}
-                        <ChevronDown className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="start">
-                      {category.options.map((option) => (
-                        <DropdownMenuItem key={option}>
-                          {option}
-                        </DropdownMenuItem>
-                      ))}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                ))}
-              
-                <div className="h-full border-l mx-2 flex-shrink-0" />
-              
-                {availableGenres.map((genre) => (
-                  <Badge
-                    key={genre}
-                    variant={selectedGenres.includes(genre) ? "default" : "outline"}
-                    className={`cursor-pointer whitespace-nowrap py-1.5 px-4 text-sm transition-all duration-200 
-                             ${selectedGenres.includes(genre) ? "bg-electric-magenta text-white font-bold" : "bg-gray-800 text-gray-200"}
-                             hover:scale-105 active:scale-95 hover:bg-primary/90 shadow-sm flex-shrink-0`}
-                    onClick={() => onGenreToggle(genre)}
+          <div className="hidden md:flex items-center gap-2 overflow-x-auto hide-scrollbar">
+            {filterCategories.map((category) => (
+              <DropdownMenu key={category.label}>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 px-3 text-sm font-medium text-muted-foreground 
+                             hover:text-foreground hover:bg-muted/50"
                   >
-                    {genre}
-                  </Badge>
-                ))}
-              </div>
+                    {category.label}
+                    <ChevronDown className="h-3.5 w-3.5 ml-1 opacity-50" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" className="w-48">
+                  {category.options.map((option) => (
+                    <DropdownMenuItem key={option} className="text-sm">
+                      {option}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ))}
+
+            <div className="h-4 border-l mx-1" />
+
+            <div className="flex items-center gap-1.5">
+              {availableGenres.map((genre) => (
+                <Badge
+                  key={genre}
+                  variant={selectedGenres.includes(genre) ? "default" : "outline"}
+                  className={cn(
+                    "px-2.5 h-7 text-xs font-medium cursor-pointer transition-all whitespace-nowrap",
+                    selectedGenres.includes(genre)
+                      ? "bg-primary/15 text-primary hover:bg-primary/20 border-primary/10"
+                      : "hover:bg-muted/50 border-muted-foreground/20"
+                  )}
+                  onClick={() => onGenreToggle(genre)}
+                >
+                  {genre}
+                </Badge>
+              ))}
             </div>
           </div>
 
           {/* Mobile Filter Button */}
-          <div className="md:hidden w-full">
+          <div className="md:hidden ml-auto">
             <Sheet open={isMobileFiltersOpen} onOpenChange={setIsMobileFiltersOpen}>
               <SheetTrigger asChild>
-                <Button variant="outline" className="w-full">
-                  <SlidersHorizontal className="mr-2 h-4 w-4" />
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  className="h-8 px-3 text-sm font-medium"
+                >
+                  <SlidersHorizontal className="h-4 w-4 mr-2" />
                   Filters
                 </Button>
               </SheetTrigger>
