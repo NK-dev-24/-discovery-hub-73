@@ -129,7 +129,7 @@ export default function AVNPage() {
       </Helmet>
 
       <div className="min-h-screen bg-background">
-        <div className="container py-8">
+        <div className="container py-4 md:py-8">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -138,90 +138,98 @@ export default function AVNPage() {
             <Button 
               onClick={() => navigate("/")} 
               variant="outline"
-              className="mb-8 hover:neon-shadow transition-all duration-300"
+              className="mb-4 md:mb-8 hover:neon-shadow transition-all duration-300"
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Directory
             </Button>
 
-            <div className="space-y-8">
-              {/* Hero Section */}
+            <div className="space-y-6 md:space-y-8">
+              {/* Hero Section - Improved Mobile Layout */}
               <motion.div 
-                className="relative aspect-[21/9] rounded-lg overflow-hidden group neon-border"
+                className="relative rounded-lg overflow-hidden group neon-border"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
               >
-                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent opacity-50 z-10" />
-                <motion.img
-                  src={avn.image}
-                  alt={`Cover image for ${avn.title}`}
-                  className="object-cover w-full h-full"
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.4 }}
-                />
-                {/* Status Badge */}
-                <div className="absolute top-4 left-4 z-20 flex items-center gap-2">
-                  {avn.featured && (
-                    <Badge variant="secondary" className="bg-primary/20 text-primary hover:bg-primary/30">
-                      <Sparkles className="w-3 h-3 mr-1" />
-                      Featured
-                    </Badge>
-                  )}
-                  {avn.status && (
-                    <StatusPill status={avn.status} />
-                  )}
-                </div>
-                {/* Title Overlay */}
-                <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-background to-transparent z-20">
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.3 }}
-                  >
-                    <h1 className="text-4xl font-bold text-gradient mb-2">{avn.title}</h1>
-                    <div className="flex items-center flex-wrap gap-3">
-                      <p className="text-xl text-muted-foreground">
-                        by {avn.developer}
-                      </p>
-                      {avn.version && (
-                        <Badge variant="outline" className="text-sm bg-black/30 backdrop-blur-sm">
-                          v{avn.version}
-                        </Badge>
-                      )}
-                      {avn.lastUpdated && (
-                        <Badge variant="outline" className="text-sm flex items-center gap-1 bg-black/30 backdrop-blur-sm">
-                          <Calendar className="h-3 w-3" />
-                          {new Date(avn.lastUpdated).toLocaleDateString()}
-                        </Badge>
-                      )}
-                      {avn.platforms && avn.platforms.length > 0 && (
-                        <div className="flex items-center gap-1">
-                          {avn.platforms.map((platform) => (
-                            <span key={platform} className="text-muted-foreground/80">
-                              <PlatformIcon platform={platform} />
-                            </span>
-                          ))}
+                {/* Mobile-optimized aspect ratio */}
+                <div className="relative aspect-[16/9] md:aspect-[21/9]">
+                  <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent opacity-50 z-10" />
+                  <motion.img
+                    src={avn.image}
+                    alt={`Cover image for ${avn.title}`}
+                    className="object-cover w-full h-full"
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.4 }}
+                  />
+                  
+                  {/* Status Badge - Adjusted for mobile */}
+                  <div className="absolute top-2 md:top-4 left-2 md:left-4 z-20 flex flex-wrap items-center gap-2">
+                    {avn.featured && (
+                      <Badge variant="secondary" className="bg-primary/20 text-primary hover:bg-primary/30">
+                        <Sparkles className="w-3 h-3 mr-1" />
+                        Featured
+                      </Badge>
+                    )}
+                    {avn.status && (
+                      <StatusPill status={avn.status} />
+                    )}
+                  </div>
+
+                  {/* Title Overlay - Mobile Optimized */}
+                  <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6 bg-gradient-to-t from-background to-transparent z-20">
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: 0.3 }}
+                      className="space-y-2 md:space-y-3"
+                    >
+                      <h1 className="text-2xl md:text-4xl font-bold text-gradient break-words">{avn.title}</h1>
+                      <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-3">
+                        <p className="text-lg md:text-xl text-muted-foreground">
+                          by {avn.developer}
+                        </p>
+                        <div className="flex flex-wrap items-center gap-2">
+                          {avn.version && (
+                            <Badge variant="outline" className="text-sm bg-black/30 backdrop-blur-sm">
+                              v{avn.version}
+                            </Badge>
+                          )}
+                          {avn.lastUpdated && (
+                            <Badge variant="outline" className="text-sm flex items-center gap-1 bg-black/30 backdrop-blur-sm">
+                              <Calendar className="h-3 w-3" />
+                              {new Date(avn.lastUpdated).toLocaleDateString()}
+                            </Badge>
+                          )}
                         </div>
-                      )}
-                    </div>
-                  </motion.div>
+                        {avn.platforms && avn.platforms.length > 0 && (
+                          <div className="flex items-center gap-1">
+                            {avn.platforms.map((platform) => (
+                              <span key={platform} className="text-muted-foreground/80">
+                                <PlatformIcon platform={platform} />
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </motion.div>
+                  </div>
                 </div>
               </motion.div>
 
-              <div className="grid gap-8 md:grid-cols-3">
+              <div className="grid gap-6 md:gap-8 md:grid-cols-3">
                 <motion.div 
-                  className="md:col-span-2 space-y-8"
+                  className="md:col-span-2 space-y-6 md:space-y-8"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: 0.4 }}
                 >
                   {/* Synopsis */}
-                  <div className="space-y-4 neon-glow p-6 rounded-lg bg-card/50">
-                    <h2 className="text-2xl font-semibold text-foreground">Synopsis</h2>
+                  <div className="space-y-4 neon-glow p-4 md:p-6 rounded-lg bg-card/50">
+                    <h2 className="text-xl md:text-2xl font-semibold text-foreground">Synopsis</h2>
                     <div className="relative">
                       <p className={cn(
-                        "text-lg text-muted-foreground leading-relaxed",
+                        "text-base md:text-lg text-muted-foreground leading-relaxed",
                         !isDescriptionExpanded && "line-clamp-3"
                       )}>
                         {avn.description}
@@ -244,7 +252,7 @@ export default function AVNPage() {
                   </div>
 
                   <div className="space-y-4">
-                    <h2 className="text-2xl font-semibold text-foreground">Genres</h2>
+                    <h2 className="text-xl md:text-2xl font-semibold text-foreground">Genres</h2>
                     <div className="flex flex-wrap gap-2">
                       {avn.genre.map((g) => (
                         <Badge 
@@ -265,44 +273,47 @@ export default function AVNPage() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: 0.6 }}
                 >
-                  <div className="p-6 bg-card rounded-lg neon-border">
-                    <div className="flex items-center gap-2 mb-6">
-                      <span className="text-2xl font-bold text-foreground">Actions</span>
+                  <div className="p-4 md:p-6 bg-card rounded-lg neon-border">
+                    <div className="flex items-center gap-2 mb-4 md:mb-6">
+                      <span className="text-xl md:text-2xl font-bold text-foreground">Actions</span>
                     </div>
 
                     <div className="space-y-3">
-                      <Button 
-                        className="w-full hover:neon-shadow transition-all duration-300 pulse-glow" 
-                        asChild
-                      >
-                        <a
-                          href={avn.website}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                      {/* Desktop Actions */}
+                      <div className="hidden md:block space-y-3">
+                        <Button 
+                          className="w-full hover:neon-shadow transition-all duration-300 pulse-glow" 
+                          asChild
                         >
-                          Play Now
-                          <ExternalLink className="ml-2 h-4 w-4" />
-                        </a>
-                      </Button>
-                      <Button 
-                        variant="outline" 
-                        className="w-full hover:neon-shadow transition-all duration-300" 
-                        asChild
-                      >
-                        <a 
-                          href={avn.support}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                          <a
+                            href={avn.website}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            Play Now
+                            <ExternalLink className="ml-2 h-4 w-4" />
+                          </a>
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          className="w-full hover:neon-shadow transition-all duration-300" 
+                          asChild
                         >
-                          Support Developer
-                          <ExternalLink className="ml-2 h-4 w-4" />
-                        </a>
-                      </Button>
+                          <a 
+                            href={avn.support}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            Support Developer
+                            <ExternalLink className="ml-2 h-4 w-4" />
+                          </a>
+                        </Button>
+                      </div>
                     </div>
                   </div>
 
                   {avn.featured && (
-                    <div className="p-6 rounded-lg neon-border bg-primary/5">
+                    <div className="p-4 md:p-6 rounded-lg neon-border bg-primary/5">
                       <Badge variant="secondary" className="bg-primary/20 text-primary hover:bg-primary/30">
                         <Sparkles className="w-3 h-3 mr-1" />
                         Featured Title
@@ -313,12 +324,12 @@ export default function AVNPage() {
                     </div>
                   )}
 
-                  <div className="p-6 bg-card rounded-lg neon-border shadow-lg">
-                    <h2 className="text-2xl font-semibold text-foreground">Available On</h2>
-                    <div className="flex flex-wrap gap-6 mt-4">
+                  <div className="p-4 md:p-6 bg-card rounded-lg neon-border shadow-lg">
+                    <h2 className="text-xl md:text-2xl font-semibold text-foreground">Available On</h2>
+                    <div className="flex flex-wrap gap-4 md:gap-6 mt-4">
                       {avn.distribution.map((dist) => (
                         <div key={dist.platform} className="flex items-center">
-                          <DistributionIcon platform={dist.platform} className="h-8 w-8" />
+                          <DistributionIcon platform={dist.platform} className="h-6 w-6 md:h-8 md:w-8" />
                         </div>
                       ))}
                     </div>
@@ -327,6 +338,37 @@ export default function AVNPage() {
               </div>
             </div>
           </motion.div>
+        </div>
+
+        {/* Mobile Sticky Action Buttons */}
+        <div className="md:hidden fixed bottom-0 left-0 right-0 p-4 bg-background/80 backdrop-blur-lg border-t border-border/40 space-y-2">
+          <Button 
+            className="w-full hover:neon-shadow transition-all duration-300 pulse-glow" 
+            asChild
+          >
+            <a
+              href={avn.website}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Play Now
+              <ExternalLink className="ml-2 h-4 w-4" />
+            </a>
+          </Button>
+          <Button 
+            variant="outline" 
+            className="w-full hover:neon-shadow transition-all duration-300" 
+            asChild
+          >
+            <a 
+              href={avn.support}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Support Developer
+              <ExternalLink className="ml-2 h-4 w-4" />
+            </a>
+          </Button>
         </div>
       </div>
     </>
