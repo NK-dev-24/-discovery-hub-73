@@ -14,6 +14,26 @@ import { cn } from "@/lib/utils";
 import { useToast } from "@/components/ui/use-toast";
 import debounce from "lodash/debounce";
 import { Analytics } from "@vercel/analytics/react";
+import "@/styles/animations.css";
+
+function useRotatingPlaceholder() {
+  const [placeholderIndex, setPlaceholderIndex] = useState(0);
+  const placeholders = [
+    "Search for 'fantasy RPG'",
+    "Try 'space adventure'",
+    "Find 'romance visual novel'",
+    "Discover 'mystery games'"
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPlaceholderIndex((current) => (current + 1) % placeholders.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return placeholders[placeholderIndex];
+}
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -108,37 +128,115 @@ const Index = () => {
       <ErrorBoundary>
         <Header />
         
-        <main className="flex-1 container py-8">
-          <section className="relative w-full min-h-[40vh] md:min-h-[60vh] flex items-center justify-center cyber-gradient overflow-hidden">
+        <main className="flex-1 container py-4">
+          <section className="relative w-full min-h-[30vh] md:min-h-[35vh] flex items-center justify-center cyber-gradient overflow-hidden">
+            {/* Background layers */}
+            <div className="absolute inset-0 bg-[url('/images/cyber-bg.webp')] bg-cover bg-center opacity-20" />
+            <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/80 to-background/40 backdrop-blur-[2px]" />
             <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-5" />
-            <div className="container max-w-4xl mx-auto px-4 py-8 md:py-12 space-y-6 md:space-y-8 relative z-10">
-              <div className="text-center space-y-4">
-                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-foreground neon-text">
-                  Discover Your Next AVN Adventure
-                </h1>
-                <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
-                  Enter a world of immersive storytelling and unforgettable characters
-                </p>
-              </div>
-              
-              <div className={cn(
-                "transition-all duration-300 max-w-2xl mx-auto transform",
-                isScrolled ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"
-              )}>
-                <div className="relative group">
-                  <div className="absolute -inset-0.5 bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--secondary))] rounded-xl opacity-75 blur group-hover:opacity-100 transition duration-300" />
-                  <div className="relative">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                    <Input
-                      type="search"
-                      placeholder="Search AVNs by title, genre, or developer..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full h-12 pl-12 pr-4 text-base rounded-lg shadow-lg 
-                               bg-background/80 backdrop-blur-md border-muted/50
-                               focus:bg-background/90 focus:border-primary focus:ring-2 focus:ring-primary/20"
-                      aria-label="Search AVNs"
-                    />
+            
+            {/* Main content */}
+            <div className="container max-w-7xl mx-auto px-4 py-4 md:py-6 relative z-10">
+              <div className="grid grid-cols-1 md:grid-cols-[1fr,auto] gap-6 items-center">
+                {/* Left column - Content */}
+                <div className="space-y-4">
+                  <div className="space-y-3">
+                    <h1 className="leading-tight">
+                      <span className="block text-2xl md:text-3xl lg:text-4xl font-light tracking-wide text-foreground/90 text-shadow-sm">
+                        Discover Your Next
+                      </span>
+                      <span className="block text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight heading-gradient text-shadow-lg mt-1">
+                        AVN Adventure
+                      </span>
+                    </h1>
+                    <p className="text-sm md:text-base text-muted-foreground/80 max-w-xl fade-in font-light">
+                      Enter a world of immersive storytelling
+                    </p>
+                  </div>
+
+                  {/* Search and filters section */}
+                  <div className={cn(
+                    "space-y-3 w-full fade-in",
+                    isScrolled ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"
+                  )}>
+                    <div className="relative group">
+                      <div className="relative flex items-center search-glow rounded-lg overflow-hidden">
+                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground animate-pulse-subtle" />
+                        <Input
+                          type="search"
+                          placeholder={useRotatingPlaceholder()}
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                          className="w-full h-12 pl-12 pr-28 text-base shadow-lg 
+                                   bg-background/90 backdrop-blur-md border-primary/20
+                                   focus:bg-background/95 focus:border-primary/40
+                                   transition-all duration-300 ease-in-out"
+                          aria-label="Search AVNs"
+                        />
+                        <button className="absolute right-2 top-1/2 -translate-y-1/2 
+                                         px-6 h-9 bg-primary hover:bg-primary/90
+                                         text-primary-foreground font-medium
+                                         transition-all duration-300 rounded
+                                         hover:shadow-lg active:transform active:scale-95">
+                          Search
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Quick filters */}
+                    <div className="flex gap-2 overflow-x-auto hide-scrollbar px-0.5">
+                      {['New', 'Popular', 'Top Rated'].map((filter) => (
+                        <button
+                          key={filter}
+                          className="px-4 py-1.5 rounded-full text-sm whitespace-nowrap
+                                   bg-muted/30 hover:bg-muted/50
+                                   border border-muted-foreground/10
+                                   transition-all duration-300
+                                   hover:border-primary/20 hover:text-primary-foreground/90"
+                        >
+                          {filter}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right column - Featured AVNs */}
+                <div className="relative w-full md:w-[300px] h-[180px] md:h-[220px] overflow-hidden rounded-lg featured-card">
+                  <div className="absolute inset-0 flex gap-4 snap-x snap-mandatory overflow-x-auto hide-scrollbar">
+                    {featuredAVNs.slice(0, 3).map((avn) => (
+                      <div
+                        key={avn.id}
+                        className="relative w-full flex-none snap-center"
+                      >
+                        <div className="relative h-full overflow-hidden">
+                          <img
+                            src={avn.image || '/placeholder-avn.webp'}
+                            alt={avn.title}
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/50 to-transparent" />
+                          <div className="absolute bottom-0 left-0 p-3 w-full">
+                            <h3 className="text-base font-semibold text-foreground/90 truncate text-shadow-sm">{avn.title}</h3>
+                            <p className="text-sm text-muted-foreground/80 truncate">{avn.developer}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {/* Navigation dots */}
+                  <div className="absolute bottom-2 right-2 flex gap-1.5">
+                    {featuredAVNs.slice(0, 3).map((_, index) => (
+                      <div
+                        key={index}
+                        className={cn(
+                          "h-1.5 rounded-full transition-all duration-300",
+                          index === 0 
+                            ? "w-4 bg-primary shadow-lg" 
+                            : "w-1.5 bg-muted-foreground/30 hover:bg-primary/40"
+                        )}
+                      />
+                    ))}
                   </div>
                 </div>
               </div>
@@ -191,3 +289,4 @@ const Index = () => {
 };
 
 export default Index;
+
