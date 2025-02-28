@@ -140,7 +140,7 @@ const Index = () => {
       <ErrorBoundary>
         <Header />
         
-        <main className="flex-1 container py-4">
+        <main className="flex-1">
           <section className="relative w-full min-h-[30vh] md:min-h-[35vh] flex items-center justify-center cyber-gradient overflow-hidden">
             {/* Background layers */}
             <div className="absolute inset-0 bg-[url('/images/cyber-bg.webp')] bg-cover bg-center opacity-20" />
@@ -148,8 +148,8 @@ const Index = () => {
             <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-5" />
             
             {/* Main content */}
-            <div className="container max-w-7xl mx-auto px-4 py-4 md:py-6 relative z-10">
-              <div className="grid grid-cols-1 md:grid-cols-[1fr,auto] gap-6 items-center">
+            <div className="w-full md:container md:max-w-7xl mx-auto px-0 md:px-4 py-4 md:py-6 relative z-10">
+              <div className="grid grid-cols-1 md:grid-cols-[1fr,auto] gap-6 items-center px-3 md:px-0">
                 {/* Left column - Content */}
                 <div className="space-y-4">
                   <div className="space-y-3">
@@ -255,7 +255,7 @@ const Index = () => {
             showSearch={isScrolled}
           />
 
-          <div className="container max-w-screen-2xl mx-auto px-4 py-8 md:py-12">
+          <div className="w-full md:container md:max-w-screen-2xl mx-auto px-2 md:px-4 py-8 md:py-12">
             <Suspense fallback={<LoadingState />}>
               {isLoading ? (
                 <LoadingState />
@@ -263,11 +263,13 @@ const Index = () => {
                 <div className="space-y-12">
 
                   <section className="space-y-4">
-                    <h2 className="text-2xl font-semibold">Find your next AVN</h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 md:gap-6">
+                    <h2 className="text-2xl font-semibold px-2 md:px-0">Find your next AVN</h2>
+                    <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3 md:gap-6">
                       {filteredAVNs.length > 0 ? (
                         filteredAVNs.map((avn) => (
-                          <AVNCard key={avn.id} avn={avn} />
+                          <div key={avn.id} className="px-2 md:px-0">
+                            <AVNCard avn={avn} />
+                          </div>
                         ))
                       ) : (
                         <div className="col-span-full text-center py-12">
