@@ -36,4 +36,6 @@ export type AVN = {
   lastUpdated?: string;
   screenshots?: string[];
   downloadUrl?: string;
+  price: "free" | "paid";
+  earlyAccess: boolean;
 };

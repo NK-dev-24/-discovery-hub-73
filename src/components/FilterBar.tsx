@@ -85,7 +85,13 @@ export const FilterBar = ({
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start" className="w-48">
                   {category.options.map((option) => (
-                    <DropdownMenuItem key={option} className="text-sm">
+                    <DropdownMenuItem key={option} className="flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={selectedGenres.includes(option as Genre)}
+                        onChange={() => onGenreToggle(option as Genre)}
+                        className="mr-2"
+                      />
                       {option}
                     </DropdownMenuItem>
                   ))}
@@ -95,23 +101,33 @@ export const FilterBar = ({
 
             <div className="h-4 border-l mx-1" />
 
-            <div className="flex items-center gap-1.5">
-              {availableGenres.map((genre) => (
-                <Badge
-                  key={genre}
-                  variant={selectedGenres.includes(genre) ? "default" : "outline"}
-                  className={cn(
-                    "px-2.5 h-7 text-xs font-medium cursor-pointer transition-all whitespace-nowrap",
-                    selectedGenres.includes(genre)
-                      ? "bg-primary/15 text-primary hover:bg-primary/20 border-primary/10"
-                      : "hover:bg-muted/50 border-muted-foreground/20"
-                  )}
-                  onClick={() => onGenreToggle(genre)}
+            {/* Genres Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 px-3 text-sm font-medium text-muted-foreground 
+                           hover:text-foreground hover:bg-muted/50"
                 >
-                  {genre}
-                </Badge>
-              ))}
-            </div>
+                  Genres
+                  <ChevronDown className="h-3.5 w-3.5 ml-1 opacity-50" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="w-48">
+                {availableGenres.map((genre) => (
+                  <DropdownMenuItem key={genre} className="flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={selectedGenres.includes(genre)}
+                      onChange={() => onGenreToggle(genre)}
+                      className="mr-2"
+                    />
+                    {genre}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
 
           {/* Mobile Filter Button */}
@@ -142,6 +158,12 @@ export const FilterBar = ({
                             variant="outline"
                             className="cursor-pointer"
                           >
+                            <input
+                              type="checkbox"
+                              checked={selectedGenres.includes(option as Genre)}
+                              onChange={() => onGenreToggle(option as Genre)}
+                              className="mr-2"
+                            />
                             {option}
                           </Badge>
                         ))}
@@ -150,16 +172,17 @@ export const FilterBar = ({
                   ))}
                   <div className="space-y-2">
                     <h3 className="font-medium">Genres</h3>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-col gap-2">
                       {availableGenres.map((genre) => (
-                        <Badge
-                          key={genre}
-                          variant={selectedGenres.includes(genre) ? "default" : "outline"}
-                          className="cursor-pointer"
-                          onClick={() => onGenreToggle(genre)}
-                        >
+                        <div key={genre} className="flex items-center">
+                          <input
+                            type="checkbox"
+                            checked={selectedGenres.includes(genre)}
+                            onChange={() => onGenreToggle(genre)}
+                            className="mr-2"
+                          />
                           {genre}
-                        </Badge>
+                        </div>
                       ))}
                     </div>
                   </div>

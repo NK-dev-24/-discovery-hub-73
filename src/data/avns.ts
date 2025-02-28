@@ -31,7 +31,9 @@ export const avns: AVN[] = [
       "https://images.unsplash.com/photo-1451187580459-43490279c0fa",
       "https://images.unsplash.com/photo-1614728263952-84ea256f9679",
       "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158"
-    ]
+    ],
+    price: "paid",
+    earlyAccess: true
   },
   {
     id: "2",
@@ -63,7 +65,9 @@ export const avns: AVN[] = [
       "https://images.unsplash.com/photo-1535666669445-e8c15cd2e7d9",
       "https://images.unsplash.com/photo-1516534775068-ba3e7458af70",
       "https://images.unsplash.com/photo-1518002171953-a080ee817e1f"
-    ]
+    ],
+    price: "paid",
+    earlyAccess: false
   },
   {
     id: "3",
@@ -94,7 +98,9 @@ export const avns: AVN[] = [
       "https://images.unsplash.com/photo-1515879218367-8466d910aaa4",
       "https://images.unsplash.com/photo-1518544801976-3e159e50e5bb",
       "https://images.unsplash.com/photo-1542751371-6533d324f6b3"
-    ]
+    ],
+    price: "free",
+    earlyAccess: true
   },
   {
     id: "4",
@@ -122,7 +128,9 @@ export const avns: AVN[] = [
       "https://images.unsplash.com/photo-1505409859467-3a796fd5798e",
       "https://images.unsplash.com/photo-1507196476240-088916fabc57",
       "https://images.unsplash.com/photo-1499744937866-d7e566a20a61"
-    ]
+    ],
+    price: "paid",
+    earlyAccess: true
   },
   {
     id: "5",
@@ -149,7 +157,9 @@ export const avns: AVN[] = [
       "https://images.unsplash.com/photo-1517242027094-631f8c218a0f",
       "https://images.unsplash.com/photo-1516302752625-fcc3c50ae61f",
       "https://images.unsplash.com/photo-1508511267-5a04ee04ca95"
-    ]
+    ],
+    price: "free",
+    earlyAccess: false
   }
 ];
 
