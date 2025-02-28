@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Search, SlidersHorizontal, ChevronDown } from "lucide-react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
@@ -45,6 +45,11 @@ const filterCategories = [
     label: "Platform",
     options: ["Windows", "Mac", "Linux", "Android", "iOS", "Web"] as const,
     type: "platform" as const
+  },
+  {
+    label: "Genres",
+    options: [] as Genre[], // Placeholder for genres
+    type: "genre" as const
   }
 ];
 
@@ -77,17 +82,22 @@ export const FilterBar = ({
       case "platform":
         onPlatformToggle(value as Platform);
         break;
+      case "genre":
+        onGenreToggle(value as Genre);
+        break;
     }
   };
 
-  const isOptionSelected = (type: string, value: string): boolean => {
+  const isOptionSelected = (type: string, option: string): boolean => {
     switch (type) {
       case "pricing":
-        return selectedPricing.includes(value as "free" | "paid");
+        return selectedPricing.includes(option as "free" | "paid");
       case "status":
-        return selectedStatus.includes(value as Status);
+        return selectedStatus.includes(option as Status);
       case "platform":
-        return selectedPlatforms.includes(value as Platform);
+        return selectedPlatforms.includes(option as Platform);
+      case "genre":
+        return selectedGenres.includes(option as Genre);
       default:
         return false;
     }
@@ -118,64 +128,57 @@ export const FilterBar = ({
 
           {/* Desktop Filters */}
           <div className="hidden md:flex items-center gap-2 overflow-x-auto hide-scrollbar">
-            {filterCategories.map((category) => (
-              <DropdownMenu key={category.label}>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-8 px-3 text-sm font-medium text-muted-foreground 
-                             hover:text-foreground hover:bg-muted/50"
-                  >
-                    {category.label}
-                    <ChevronDown className="h-3.5 w-3.5 ml-1 opacity-50" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="w-48">
-                  {category.options.map((option) => (
-                    <DropdownMenuItem key={option} className="flex items-center">
-                      <input
-                        type="checkbox"
-                        checked={isOptionSelected(category.type, option)}
-                        onChange={() => handleFilterToggle(category.type, option)}
-                        className="mr-2"
-                      />
-                      {option}
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ))}
+            {filterCategories.map((category) => {
+              const isActive = category.type === "pricing" ? selectedPricing.length > 0 :
+                               category.type === "status" ? selectedStatus.length > 0 :
+                               category.type === "platform" ? selectedPlatforms.length > 0 :
+                               category.type === "genre" ? selectedGenres.length > 0 : false;
 
-            <div className="h-4 border-l mx-1" />
-
-            {/* Genres Dropdown */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-8 px-3 text-sm font-medium text-muted-foreground 
-                           hover:text-foreground hover:bg-muted/50"
-                >
-                  Genres
-                  <ChevronDown className="h-3.5 w-3.5 ml-1 opacity-50" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" className="w-48">
-                {availableGenres.map((genre) => (
-                  <DropdownMenuItem key={genre} className="flex items-center">
-                    <input
-                      type="checkbox"
-                      checked={selectedGenres.includes(genre)}
-                      onChange={() => onGenreToggle(genre)}
-                      className="mr-2"
-                    />
-                    {genre}
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
+              return (
+                <DropdownMenu key={category.label}>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className={cn(
+                        "h-8 px-3 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50",
+                        isActive ? "text-primary" : ""
+                      )}
+                    >
+                      {category.label}
+                      <ChevronDown className="h-3.5 w-3.5 ml-1 opacity-50" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start" className="w-48">
+                    {category.type === "genre" ? (
+                      availableGenres.map((genre) => (
+                        <DropdownMenuItem key={genre} className="flex items-center">
+                          <input
+                            type="checkbox"
+                            checked={selectedGenres.includes(genre)}
+                            onChange={() => onGenreToggle(genre)}
+                            className="mr-2"
+                          />
+                          {genre}
+                        </DropdownMenuItem>
+                      ))
+                    ) : (
+                      category.options.map((option) => (
+                        <DropdownMenuItem key={option} className="flex items-center">
+                          <input
+                            type="checkbox"
+                            checked={isOptionSelected(category.type, option)}
+                            onChange={() => handleFilterToggle(category.type, option)}
+                            className="mr-2"
+                          />
+                          {option}
+                        </DropdownMenuItem>
+                      ))
+                    )}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              );
+            })}
           </div>
 
           {/* Mobile Filter Button */}
@@ -200,34 +203,32 @@ export const FilterBar = ({
                     <div key={category.label} className="space-y-2">
                       <h3 className="font-medium">{category.label}</h3>
                       <div className="flex flex-wrap gap-2">
-                        {category.options.map((option) => (
-                          <Badge
-                            key={option}
-                            variant={isOptionSelected(category.type, option) ? "default" : "outline"}
-                            className="cursor-pointer"
-                            onClick={() => handleFilterToggle(category.type, option)}
-                          >
-                            {option}
-                          </Badge>
-                        ))}
+                        {category.type === "genre" ? (
+                          availableGenres.map((genre) => (
+                            <Badge
+                              key={genre}
+                              variant={selectedGenres.includes(genre) ? "default" : "outline"}
+                              className="cursor-pointer"
+                              onClick={() => onGenreToggle(genre)}
+                            >
+                              {genre}
+                            </Badge>
+                          ))
+                        ) : (
+                          category.options.map((option) => (
+                            <Badge
+                              key={option}
+                              variant={isOptionSelected(category.type, option) ? "default" : "outline"}
+                              className="cursor-pointer"
+                              onClick={() => handleFilterToggle(category.type, option)}
+                            >
+                              {option}
+                            </Badge>
+                          ))
+                        )}
                       </div>
                     </div>
                   ))}
-                  <div className="space-y-2">
-                    <h3 className="font-medium">Genres</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {availableGenres.map((genre) => (
-                        <Badge
-                          key={genre}
-                          variant={selectedGenres.includes(genre) ? "default" : "outline"}
-                          className="cursor-pointer"
-                          onClick={() => onGenreToggle(genre)}
-                        >
-                          {genre}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
                 </div>
               </SheetContent>
             </Sheet>
