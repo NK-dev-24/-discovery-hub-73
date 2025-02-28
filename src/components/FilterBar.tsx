@@ -11,13 +11,19 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-import { Genre } from "@/types/avn";
+import { Genre, Platform, Status } from "@/types/avn";
 
 interface FilterBarProps {
   searchQuery?: string;
   onSearchChange?: (query: string) => void;
   selectedGenres: Genre[];
   onGenreToggle: (genre: Genre) => void;
+  selectedPlatforms: Platform[];
+  onPlatformToggle: (platform: Platform) => void;
+  selectedStatus: Status[];
+  onStatusToggle: (status: Status) => void;
+  selectedPricing: ("free" | "paid")[];
+  onPricingToggle: (pricing: "free" | "paid") => void;
   availableGenres?: Genre[];
   isSticky?: boolean;
   showSearch?: boolean;
@@ -25,12 +31,21 @@ interface FilterBarProps {
 }
 
 const filterCategories = [
-  { label: "Most Popular", options: ["Today", "This Week", "This Month", "All Time"] },
-  { label: "New", options: ["Last 24h", "This Week", "This Month"] },
-  { label: "Categories", options: ["Story-rich", "Action", "Dating Sim", "RPG", "Adventure", "Visual Novel"] },
-  { label: "Platform", options: ["Windows", "Mac", "Linux", "Android"] },
-  { label: "Pricing", options: ["Free", "Paid", "Early Access"] },
-  { label: "Status", options: ["Completed", "In Development", "On Hold"] }
+  {
+    label: "Pricing",
+    options: ["free", "paid"] as const,
+    type: "pricing" as const
+  },
+  {
+    label: "Status",
+    options: ["Completed", "Ongoing", "Hiatus", "Planned", "Dropped"] as const,
+    type: "status" as const
+  },
+  {
+    label: "Platform",
+    options: ["Windows", "Mac", "Linux", "Android", "iOS", "Web"] as const,
+    type: "platform" as const
+  }
 ];
 
 export const FilterBar = ({
@@ -38,12 +53,45 @@ export const FilterBar = ({
   onSearchChange,
   selectedGenres,
   onGenreToggle,
+  selectedPlatforms,
+  onPlatformToggle,
+  selectedStatus,
+  onStatusToggle,
+  selectedPricing,
+  onPricingToggle,
   availableGenres = [],
   isSticky = false,
   showSearch = false,
   className,
 }: FilterBarProps) => {
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
+
+  const handleFilterToggle = (type: string, value: string) => {
+    switch (type) {
+      case "pricing":
+        onPricingToggle(value as "free" | "paid");
+        break;
+      case "status":
+        onStatusToggle(value as Status);
+        break;
+      case "platform":
+        onPlatformToggle(value as Platform);
+        break;
+    }
+  };
+
+  const isOptionSelected = (type: string, value: string): boolean => {
+    switch (type) {
+      case "pricing":
+        return selectedPricing.includes(value as "free" | "paid");
+      case "status":
+        return selectedStatus.includes(value as Status);
+      case "platform":
+        return selectedPlatforms.includes(value as Platform);
+      default:
+        return false;
+    }
+  };
 
   return (
     <div className={cn(
@@ -88,8 +136,8 @@ export const FilterBar = ({
                     <DropdownMenuItem key={option} className="flex items-center">
                       <input
                         type="checkbox"
-                        checked={selectedGenres.includes(option as Genre)}
-                        onChange={() => onGenreToggle(option as Genre)}
+                        checked={isOptionSelected(category.type, option)}
+                        onChange={() => handleFilterToggle(category.type, option)}
                         className="mr-2"
                       />
                       {option}
@@ -155,15 +203,10 @@ export const FilterBar = ({
                         {category.options.map((option) => (
                           <Badge
                             key={option}
-                            variant="outline"
+                            variant={isOptionSelected(category.type, option) ? "default" : "outline"}
                             className="cursor-pointer"
+                            onClick={() => handleFilterToggle(category.type, option)}
                           >
-                            <input
-                              type="checkbox"
-                              checked={selectedGenres.includes(option as Genre)}
-                              onChange={() => onGenreToggle(option as Genre)}
-                              className="mr-2"
-                            />
                             {option}
                           </Badge>
                         ))}
@@ -172,17 +215,16 @@ export const FilterBar = ({
                   ))}
                   <div className="space-y-2">
                     <h3 className="font-medium">Genres</h3>
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-wrap gap-2">
                       {availableGenres.map((genre) => (
-                        <div key={genre} className="flex items-center">
-                          <input
-                            type="checkbox"
-                            checked={selectedGenres.includes(genre)}
-                            onChange={() => onGenreToggle(genre)}
-                            className="mr-2"
-                          />
+                        <Badge
+                          key={genre}
+                          variant={selectedGenres.includes(genre) ? "default" : "outline"}
+                          className="cursor-pointer"
+                          onClick={() => onGenreToggle(genre)}
+                        >
                           {genre}
-                        </div>
+                        </Badge>
                       ))}
                     </div>
                   </div>

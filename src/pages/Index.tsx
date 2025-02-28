@@ -6,7 +6,7 @@ import { AVNCard } from "@/components/AVNCard";
 import { LoadingState } from "@/components/LoadingState";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { avns, genres } from "@/data/avns";
-import { Genre } from "@/types/avn";
+import { Genre, Platform, Status } from "@/types/avn";
 import { Helmet } from "react-helmet";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
@@ -39,6 +39,9 @@ const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [selectedGenres, setSelectedGenres] = useState<Genre[]>([]);
+  const [selectedPlatforms, setSelectedPlatforms] = useState<Platform[]>([]);
+  const [selectedStatus, setSelectedStatus] = useState<Status[]>([]);
+  const [selectedPricing, setSelectedPricing] = useState<("free" | "paid")[]>([]);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [activeSlide, setActiveSlide] = useState(0);
@@ -104,7 +107,19 @@ const Index = () => {
         selectedGenres.length === 0 ||
         selectedGenres.every((genre) => avn.genre.includes(genre));
 
-      return matchesSearch && matchesGenres;
+      const matchesPlatforms =
+        selectedPlatforms.length === 0 ||
+        selectedPlatforms.some(platform => avn.platforms.includes(platform));
+
+      const matchesStatus =
+        selectedStatus.length === 0 ||
+        selectedStatus.includes(avn.status);
+
+      const matchesPricing =
+        selectedPricing.length === 0 ||
+        selectedPricing.includes(avn.price);
+
+      return matchesSearch && matchesGenres && matchesPlatforms && matchesStatus && matchesPricing;
     } catch (error) {
       console.error("Error filtering AVNs:", error);
       toast({
@@ -122,7 +137,30 @@ const Index = () => {
         ? prev.filter((g) => g !== genre)
         : [...prev, genre]
     );
-    console.log("Genre toggled:", genre);
+  };
+
+  const handlePlatformToggle = (platform: Platform) => {
+    setSelectedPlatforms((prev) =>
+      prev.includes(platform)
+        ? prev.filter((p) => p !== platform)
+        : [...prev, platform]
+    );
+  };
+
+  const handleStatusToggle = (status: Status) => {
+    setSelectedStatus((prev) =>
+      prev.includes(status)
+        ? prev.filter((s) => s !== status)
+        : [...prev, status]
+    );
+  };
+
+  const handlePricingToggle = (pricing: "free" | "paid") => {
+    setSelectedPricing((prev) =>
+      prev.includes(pricing)
+        ? prev.filter((p) => p !== pricing)
+        : [...prev, pricing]
+    );
   };
 
   return (
@@ -250,6 +288,12 @@ const Index = () => {
             onSearchChange={setSearchQuery}
             selectedGenres={selectedGenres}
             onGenreToggle={handleGenreToggle}
+            selectedPlatforms={selectedPlatforms}
+            onPlatformToggle={handlePlatformToggle}
+            selectedStatus={selectedStatus}
+            onStatusToggle={handleStatusToggle}
+            selectedPricing={selectedPricing}
+            onPricingToggle={handlePricingToggle}
             availableGenres={genres}
             isSticky={isScrolled}
             showSearch={isScrolled}
