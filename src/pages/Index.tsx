@@ -163,6 +163,15 @@ const Index = () => {
     );
   };
 
+  const handleClearFilters = useCallback(() => {
+    setSearchQuery("");
+    setDebouncedSearchTerm("");
+    setSelectedGenres([]);
+    setSelectedPlatforms([]);
+    setSelectedStatus([]);
+    setSelectedPricing([]);
+  }, []);
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Analytics />
@@ -297,6 +306,8 @@ const Index = () => {
             availableGenres={genres}
             isSticky={isScrolled}
             showSearch={isScrolled}
+            totalResults={filteredAVNs.length}
+            onClearFilters={handleClearFilters}
           />
 
           <div className="w-full md:container md:max-w-screen-2xl mx-auto px-2 md:px-4 py-8 md:py-12">
