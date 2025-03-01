@@ -15,6 +15,10 @@ import { useToast } from "@/components/ui/use-toast";
 import debounce from "lodash/debounce";
 import { Analytics } from "@vercel/analytics/react";
 import "@/styles/animations.css";
+import { searchAVNs, initializeGenreTerms } from "@/lib/search";
+
+// Initialize search system with genres
+initializeGenreTerms(genres);
 
 function useRotatingPlaceholder() {
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
@@ -95,31 +99,33 @@ const Index = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const filteredAVNs = avns.filter((avn) => {
+  const filteredAVNs = useMemo(() => {
     try {
-      const matchesSearch =
-        debouncedSearchTerm === "" ||
-        avn.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
-        avn.description.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
-        avn.developer.toLowerCase().includes(debouncedSearchTerm.toLowerCase());
+      // First apply search
+      let results = debouncedSearchTerm 
+        ? searchAVNs(avns, debouncedSearchTerm)
+        : avns;
 
-      const matchesGenres =
-        selectedGenres.length === 0 ||
-        selectedGenres.every((genre) => avn.genre.includes(genre));
+      // Then apply filters
+      return results.filter((avn) => {
+        const matchesPlatforms =
+          selectedPlatforms.length === 0 ||
+          selectedPlatforms.some(platform => avn.platforms.includes(platform));
 
-      const matchesPlatforms =
-        selectedPlatforms.length === 0 ||
-        selectedPlatforms.some(platform => avn.platforms.includes(platform));
+        const matchesStatus =
+          selectedStatus.length === 0 ||
+          selectedStatus.includes(avn.status);
 
-      const matchesStatus =
-        selectedStatus.length === 0 ||
-        selectedStatus.includes(avn.status);
+        const matchesPricing =
+          selectedPricing.length === 0 ||
+          selectedPricing.includes(avn.price);
 
-      const matchesPricing =
-        selectedPricing.length === 0 ||
-        selectedPricing.includes(avn.price);
+        const matchesGenres =
+          selectedGenres.length === 0 ||
+          selectedGenres.every((genre) => avn.genre.includes(genre));
 
-      return matchesSearch && matchesGenres && matchesPlatforms && matchesStatus && matchesPricing;
+        return matchesPlatforms && matchesStatus && matchesPricing && matchesGenres;
+      });
     } catch (error) {
       console.error("Error filtering AVNs:", error);
       toast({
@@ -127,9 +133,9 @@ const Index = () => {
         title: "Error",
         description: "There was a problem filtering the results."
       });
-      return false;
+      return [];
     }
-  });
+  }, [avns, debouncedSearchTerm, selectedPlatforms, selectedStatus, selectedPricing, selectedGenres]);
 
   const handleGenreToggle = (genre: Genre) => {
     setSelectedGenres((prev) =>
