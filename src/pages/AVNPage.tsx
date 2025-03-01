@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet";
 import { avns } from "@/data/avns";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, Star, ArrowLeft, Sparkles, Calendar, ChevronDown, ChevronUp, DollarSign, CheckCircle } from "lucide-react";
+import { ExternalLink, Star, ArrowLeft, Sparkles, Calendar, ChevronDown, ChevronUp, DollarSign, CheckCircle, Image as ImageIcon } from "lucide-react";
 import { useState } from "react";
 import { generateMetaTags, generateSchemaData } from "@/lib/seo";
 import { Breadcrumb } from "@/components/Breadcrumb";
@@ -12,6 +12,8 @@ import { MediaGallery } from "./avn/components/MediaGallery";
 import { StatusPill } from "./avn/components/StatusPill";
 import { PlatformIcon, DistributionIcon } from "./avn/components/PlatformIcons";
 import { AVNBadge } from "./avn/components/AVNBadge";
+import { cn } from "@/lib/utils";
+import { MediaItem, MediaType } from "@/types/avn";
 
 export default function AVNPage() {
   const { id } = useParams();
@@ -42,28 +44,23 @@ export default function AVNPage() {
     );
   }
 
-  // Example media items - in a real app, this would come from your data source
   const avnMedia: MediaItem[] = avn ? [
-    // Start with the main image
     { 
       type: 'image', 
       url: avn.image || 'https://placehold.co/1280x720?text=No+Image+Available', 
       title: avn.title 
     },
-    // Add screenshots if available - safely access with optional chaining
     ...((avn as any).screenshots || []).map((url: string) => ({ 
       type: 'image' as MediaType, 
       url,
       title: 'Screenshot'
     })),
-    // Add videos if available - safely access with optional chaining
     ...((avn as any).videos || []).map((url: string) => ({ 
       type: 'video' as MediaType, 
       url,
       thumbnail: avn.image || 'https://placehold.co/1280x720?text=Video+Thumbnail',
       title: 'Video'
     })),
-    // Add YouTube videos if available - safely access with optional chaining
     ...((avn as any).youtubeVideos || []).map((url: string) => ({ 
       type: 'youtube' as MediaType, 
       url,
@@ -71,9 +68,7 @@ export default function AVNPage() {
     }))
   ] : [];
 
-  // For demo purposes, add some example media if none exists
   if (avnMedia.length <= 1) {
-    // Only the cover image exists, add some demo media for testing
     avnMedia.push(
       { 
         type: 'image', 
@@ -93,7 +88,6 @@ export default function AVNPage() {
     );
   }
 
-  // SEO data generation
   const seoData = generateMetaTags({
     title: avn.title,
     description: avn.description,
@@ -121,7 +115,6 @@ export default function AVNPage() {
 
       <div className="min-h-screen bg-background">
         <div className="container p-0 md:py-8 md:px-4">
-          {/* Breadcrumb Navigation */}
           <div className="px-4 md:px-0">
             <motion.div
               initial={{ opacity: 0 }}
@@ -153,16 +146,13 @@ export default function AVNPage() {
           </div>
 
           <div className="space-y-6 md:space-y-8">
-            {/* Hero Section - Complete Mobile Redesign */}
             <motion.div 
               className="relative md:rounded-lg overflow-hidden group neon-border"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              {/* Mobile-First Cover Layout */}
               <div className="relative">
-                {/* Mobile Cover Image */}
                 <div className="block md:hidden">
                   <div className="relative aspect-[4/3] w-full">
                     <motion.img
@@ -173,8 +163,6 @@ export default function AVNPage() {
                     <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
                   </div>
                 </div>
-
-                {/* Desktop Cover Image */}
                 <div className="hidden md:block relative aspect-[21/9]">
                   <motion.img
                     src={avn.image}
@@ -186,23 +174,18 @@ export default function AVNPage() {
                   <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent opacity-50" />
                 </div>
                 
-                {/* Badge Container with improved visibility */}
                 <div className="absolute top-4 left-4 z-20 flex flex-wrap items-center gap-2">
-                  {/* Featured Badge */}
                   {avn.featured && (
                     <AVNBadge variant="primary" className="animate-pulse-subtle">
                       <Sparkles className="w-3 h-3" />
                       <span>Featured</span>
                     </AVNBadge>
                   )}
-                  
-                  {/* Status Badge */}
                   {avn.status && (
                     <StatusPill status={avn.status} />
                   )}
                 </div>
 
-                {/* Pricing Badge */}
                 <div className="absolute top-4 right-4 z-20">
                   {avn.price === "free" ? (
                     <AVNBadge variant="success">
@@ -217,7 +200,6 @@ export default function AVNPage() {
                   )}
                 </div>
 
-                {/* Title Section - Mobile Optimized */}
                 <div className="px-4 py-6 md:absolute md:bottom-0 md:left-0 md:right-0 md:p-6 md:bg-gradient-to-t md:from-background md:to-transparent">
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -227,13 +209,11 @@ export default function AVNPage() {
                   >
                     <h1 className="text-3xl md:text-4xl font-bold text-gradient">{avn.title}</h1>
                     
-                    {/* Developer & Meta Info */}
                     <div className="space-y-3 md:space-y-0 md:flex md:items-center md:gap-4">
                       <p className="text-lg md:text-xl text-muted-foreground">
                         by {avn.developer}
                       </p>
                       
-                      {/* Version & Date */}
                       <div className="flex flex-wrap items-center gap-2">
                         {avn.version && (
                           <Badge variant="outline" className="text-sm bg-black/30 backdrop-blur-sm">
@@ -248,7 +228,6 @@ export default function AVNPage() {
                         )}
                       </div>
 
-                      {/* Platform Icons */}
                       {avn.platforms && avn.platforms.length > 0 && (
                         <div className="flex items-center gap-2">
                           {avn.platforms.map((platform) => (
@@ -264,17 +243,14 @@ export default function AVNPage() {
               </div>
             </motion.div>
 
-            {/* Content Grid */}
             <div className="px-4 md:px-0">
               <div className="grid gap-6 md:gap-8 md:grid-cols-3">
-                {/* Main Content */}
                 <motion.div 
                   className="md:col-span-2 space-y-6 md:space-y-8"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: 0.4 }}
                 >
-                  {/* Media Gallery - New Section */}
                   {avnMedia.length > 0 && (
                     <div className="space-y-4 bg-card/50 p-4 md:p-6 rounded-lg">
                       <h2 className="text-xl md:text-2xl font-semibold text-foreground flex items-center gap-2">
@@ -287,7 +263,6 @@ export default function AVNPage() {
                     </div>
                   )}
 
-                  {/* Synopsis */}
                   <div className="space-y-4 neon-glow p-4 md:p-6 rounded-lg bg-card/50">
                     <h2 className="text-xl md:text-2xl font-semibold text-foreground">Synopsis</h2>
                     <div className="relative">
@@ -319,74 +294,75 @@ export default function AVNPage() {
                     </div>
                   </div>
 
-                  {/* Additional Information */}
                   <div className="space-y-4 neon-glow p-4 md:p-6 rounded-lg bg-card/50">
                     <h2 className="text-xl md:text-2xl font-semibold text-foreground">Additional Information</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {/* Genre */}
-                      <div>
-                        <h3 className="text-lg font-semibold text-muted-foreground mb-2">Genre</h3>
-                        <div className="flex flex-wrap gap-2">
-                          {avn.genre.map((genre) => (
-                            <Badge key={genre} variant="secondary">
-                              {genre}
-                            </Badge>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Platforms */}
-                      <div>
-                        <h3 className="text-lg font-semibold text-muted-foreground mb-2">Platforms</h3>
-                        <div className="flex flex-wrap gap-2">
-                          {avn.platforms.map((platform) => (
-                            <Badge key={platform} variant="secondary" className="flex items-center gap-1">
-                              <PlatformIcon platform={platform} />
-                              {platform}
-                            </Badge>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Distributions */}
-                      <div>
-                        <h3 className="text-lg font-semibold text-muted-foreground mb-2">Distributions</h3>
-                        <div className="flex flex-wrap gap-2">
-                          {avn.distributions.map((distro) => (
-                            <a key={distro.platform} href={distro.url} target="_blank" rel="noopener noreferrer">
-                              <Badge variant="outline" className="flex items-center gap-1 hover:neon-shadow transition-all duration-300">
-                                <DistributionIcon platform={distro.platform} />
-                                {distro.platform}
-                                <ExternalLink className="h-3 w-3 ml-1" />
+                      {avn.genre && avn.genre.length > 0 && (
+                        <div>
+                          <h3 className="text-lg font-semibold text-muted-foreground mb-2">Genre</h3>
+                          <div className="flex flex-wrap gap-2">
+                            {avn.genre.map((genre) => (
+                              <Badge key={genre} variant="secondary">
+                                {genre}
                               </Badge>
-                            </a>
-                          ))}
+                            ))}
+                          </div>
                         </div>
-                      </div>
+                      )}
 
-                      {/* Tags */}
-                      <div>
-                        <h3 className="text-lg font-semibold text-muted-foreground mb-2">Tags</h3>
-                        <div className="flex flex-wrap gap-2">
-                          {avn.tags.map((tag) => (
-                            <Badge key={tag} variant="secondary">
-                              {tag}
-                            </Badge>
-                          ))}
+                      {avn.platforms && avn.platforms.length > 0 && (
+                        <div>
+                          <h3 className="text-lg font-semibold text-muted-foreground mb-2">Platforms</h3>
+                          <div className="flex flex-wrap gap-2">
+                            {avn.platforms.map((platform) => (
+                              <Badge key={platform} variant="secondary" className="flex items-center gap-1">
+                                <PlatformIcon platform={platform} />
+                                {platform}
+                              </Badge>
+                            ))}
+                          </div>
                         </div>
-                      </div>
+                      )}
+
+                      {avn.distributions && avn.distributions.length > 0 && (
+                        <div>
+                          <h3 className="text-lg font-semibold text-muted-foreground mb-2">Distributions</h3>
+                          <div className="flex flex-wrap gap-2">
+                            {avn.distributions.map((distro) => (
+                              <a key={distro.platform} href={distro.url} target="_blank" rel="noopener noreferrer">
+                                <Badge variant="outline" className="flex items-center gap-1 hover:neon-shadow transition-all duration-300">
+                                  <DistributionIcon platform={distro.platform} />
+                                  {distro.platform}
+                                  <ExternalLink className="h-3 w-3 ml-1" />
+                                </Badge>
+                              </a>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {avn.tags && avn.tags.length > 0 && (
+                        <div>
+                          <h3 className="text-lg font-semibold text-muted-foreground mb-2">Tags</h3>
+                          <div className="flex flex-wrap gap-2">
+                            {avn.tags.map((tag) => (
+                              <Badge key={tag} variant="secondary">
+                                {tag}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </motion.div>
 
-                {/* Sidebar */}
                 <motion.div 
                   className="md:col-span-1 space-y-6 md:space-y-8"
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: 0.4 }}
                 >
-                  {/* Rating Section */}
                   <div className="space-y-4 neon-glow p-4 md:p-6 rounded-lg bg-card/50">
                     <h2 className="text-xl md:text-2xl font-semibold text-foreground flex items-center gap-2">
                       <Star className="h-5 w-5 text-yellow-500" />
@@ -403,23 +379,24 @@ export default function AVNPage() {
                     </Button>
                   </div>
 
-                  {/* External Links */}
                   <div className="space-y-4 neon-glow p-4 md:p-6 rounded-lg bg-card/50">
                     <h2 className="text-xl md:text-2xl font-semibold text-foreground">External Links</h2>
                     <div className="space-y-2">
-                      {avn.externalLinks.map((link) => (
-                        <Button
-                          key={link.label}
-                          asChild
-                          variant="outline"
-                          className="w-full justify-start hover:neon-shadow transition-all duration-300"
-                        >
-                          <a href={link.url} target="_blank" rel="noopener noreferrer" className="w-full flex items-center gap-2">
-                            {link.label}
-                            <ExternalLink className="h-4 w-4 ml-auto" />
-                          </a>
-                        </Button>
-                      ))}
+                      {avn.externalLinks && avn.externalLinks.length > 0 && (
+                        avn.externalLinks.map((link) => (
+                          <Button
+                            key={link.label}
+                            asChild
+                            variant="outline"
+                            className="w-full justify-start hover:neon-shadow transition-all duration-300"
+                          >
+                            <a href={link.url} target="_blank" rel="noopener noreferrer" className="w-full flex items-center gap-2">
+                              {link.label}
+                              <ExternalLink className="h-4 w-4 ml-auto" />
+                            </a>
+                          </Button>
+                        ))
+                      )}
                     </div>
                   </div>
                 </motion.div>
