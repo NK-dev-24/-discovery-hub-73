@@ -16,15 +16,6 @@ export type Distribution = {
   url: string;
 };
 
-export type MediaType = 'image' | 'video' | 'youtube';
-
-export type MediaItem = {
-  type: MediaType;
-  url: string;
-  title: string;
-  thumbnail?: string;
-};
-
 export type AVN = {
   id: string;
   title: string;
@@ -47,9 +38,4 @@ export type AVN = {
   downloadUrl?: string;
   price: "free" | "paid";
   earlyAccess: boolean;
-  tags?: string[];
-  externalLinks?: Array<{
-    label: string;
-    url: string;
-  }>;
 };

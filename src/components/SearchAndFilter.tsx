@@ -11,17 +11,6 @@ interface SearchAndFilterProps {
   onClose: () => void;
   selectedGenres: Genre[];
   onGenreToggle: (genre: Genre) => void;
-  // Add missing props
-  selectedPlatforms: Platform[];
-  onPlatformToggle: (platform: Platform) => void;
-  selectedStatus: Status[];
-  onStatusToggle: (status: Status) => void;
-  selectedPricing: ("free" | "paid")[];
-  onPricingToggle: (pricing: "free" | "paid") => void;
-  totalResults: number;
-  onClearFilters: () => void;
-  searchQuery?: string;
-  onSearchChange?: (query: string) => void;
 }
 
 export const SearchAndFilter = ({
@@ -29,16 +18,6 @@ export const SearchAndFilter = ({
   onClose,
   selectedGenres,
   onGenreToggle,
-  selectedPlatforms,
-  onPlatformToggle,
-  selectedStatus,
-  onStatusToggle,
-  selectedPricing,
-  onPricingToggle,
-  totalResults,
-  onClearFilters,
-  searchQuery,
-  onSearchChange,
 }: SearchAndFilterProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -53,17 +32,7 @@ export const SearchAndFilter = ({
           <FilterBar
             selectedGenres={selectedGenres}
             onGenreToggle={onGenreToggle}
-            selectedPlatforms={selectedPlatforms}
-            onPlatformToggle={onPlatformToggle}
-            selectedStatus={selectedStatus}
-            onStatusToggle={onStatusToggle}
-            selectedPricing={selectedPricing}
-            onPricingToggle={onPricingToggle}
             availableGenres={genres}
-            totalResults={totalResults}
-            onClearFilters={onClearFilters}
-            searchQuery={searchQuery}
-            onSearchChange={onSearchChange}
             className="flex-col gap-2"
           />
         </div>
@@ -78,4 +47,3 @@ export const SearchAndFilter = ({
     </Dialog>
   );
 };
-
